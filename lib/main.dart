@@ -91,12 +91,6 @@ class _MyWidgetState extends State<MyWidget> {
             ),
             label: '설정',
           ),
-          BottomNavigationBarItem(
-            icon: Icon(
-              Icons.system_security_update_warning,
-            ),
-            label: '테스트',
-          )
         ],
         selectedItemColor: Colors.green,
         selectedIconTheme: const IconThemeData(color: Colors.green),
