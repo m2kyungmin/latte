@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:latte/widgets/diary_block.dart';
+import 'package:flutter/widgets.dart';
 import 'dart:io';
 import 'package:image_picker/image_picker.dart';
-import '../bottompages/firstpage/firstpage.dart';
 
 class pop_up_window extends StatefulWidget {
   const pop_up_window({super.key});
@@ -75,109 +74,183 @@ class pop_up_windowState extends State<pop_up_window> {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: (<Widget>[
-          Center(
-            child: _image == null
-                ? const Text(
-                    '사진을 추가하지 않았습니다.',
-                    style: TextStyle(color: Colors.white),
-                  )
-                : CircleAvatar(
-                    backgroundImage: FileImage(File(_image!.path)),
-                    radius: 130,
-                  ),
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              ElevatedButton(
-                onPressed: getGalleryImage,
-                child: const Text('갤러리'),
+    return SingleChildScrollView(
+      child: Container(
+        decoration: BoxDecoration(
+          color: Color.fromARGB(0, 255, 255, 255),
+          shape: BoxShape.rectangle,
+          borderRadius: new BorderRadius.all(new Radius.circular(32.0)),
+        ),
+        child: Column(
+          children: (<Widget>[
+            SizedBox(height: 40),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(20.0, 0, 20, 0),
+              child: TextField(
+                style: const TextStyle(fontSize: 15),
+                controller: controller,
+                decoration: const InputDecoration(
+                  border: OutlineInputBorder(),
+                  hintText: '제목을 입력하세요.',
+                ),
+                keyboardType: TextInputType.text,
+                minLines: 1,
               ),
-              ElevatedButton(
-                onPressed: getCameraImage,
-                child: const Text('카메라'),
-              ),
-              // ElevatedButton(
-              //   onPressed: () async {
-              //     SharedPreferences prefs = await SharedPreferences.getInstance();
-              //     prefs.setString('pic', _image!.path);
-              //   },
-              //   child: Text("사진 저장"),
-              // ),
-              // ElevatedButton(
-              //   onPressed: () {
-              //     loadP();
-              //   },
-              //   child: Text("사진 불러오기"),
-              // ),
-              const Text('hello')
-            ],
-          ),
-
-          //내용 입력
-          TextField(
-            style: const TextStyle(fontSize: 15),
-            controller: controller,
-            decoration: const InputDecoration(
-              border: OutlineInputBorder(),
-              hintText: '내용을 입력하세요.',
             ),
-            keyboardType: TextInputType.text,
-            minLines: 5,
-            maxLines: 5,
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              ElevatedButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-                child: const Text('이전 화면으로'),
+            SizedBox(
+              height: 20,
+            ),
+            Row(
+              children: [
+                Padding(
+                    padding: const EdgeInsets.fromLTRB(10.0, 0, 0, 0),
+                    child: IconButton(
+                      onPressed: () {
+                        print('ㅠㅠ');
+                      },
+                      icon: Icon(Icons.sentiment_dissatisfied),
+                      color: Colors.blue,
+                      iconSize: 40,
+                    )),
+                Padding(
+                    padding: const EdgeInsets.fromLTRB(0.0, 0, 0, 0),
+                    child: IconButton(
+                      onPressed: () {
+                        print('-_-');
+                      },
+                      icon: Icon(Icons.sentiment_neutral),
+                      color: Colors.orange,
+                      iconSize: 40,
+                    )),
+                Padding(
+                    padding: const EdgeInsets.fromLTRB(0.0, 0, 0, 0),
+                    child: IconButton(
+                      onPressed: () {
+                        print('^_^');
+                      },
+                      icon: Icon(Icons.sentiment_satisfied),
+                      color: Color.fromARGB(255, 244, 200, 58),
+                      iconSize: 40,
+                    )),
+                Padding(
+                    padding: const EdgeInsets.fromLTRB(0.0, 0, 0, 0),
+                    child: IconButton(
+                      onPressed: () {
+                        print('x.x');
+                      },
+                      icon: Icon(Icons.sentiment_very_dissatisfied),
+                      color: Colors.red,
+                      iconSize: 40,
+                    )),
+                Padding(
+                    padding: const EdgeInsets.fromLTRB(0.0, 0, 0, 0),
+                    child: IconButton(
+                      onPressed: () {
+                        print('^u^');
+                      },
+                      icon: Icon(Icons.sentiment_very_satisfied),
+                      color: Colors.green,
+                      iconSize: 40,
+                    )),
+              ],
+            ),
+            SizedBox(
+              height: 20,
+            ), //내용 입력
+            Padding(
+              padding: const EdgeInsets.fromLTRB(20.0, 0, 20, 0),
+              child: TextField(
+                style: const TextStyle(fontSize: 15),
+                controller: controller,
+                decoration: const InputDecoration(
+                  border: OutlineInputBorder(),
+                  hintText: '내용을 입력하세요.',
+                ),
+                keyboardType: TextInputType.text,
+                minLines: 5,
+                maxLines: 5,
               ),
-              ElevatedButton(
+            ),
+            Row(
+              children: [
+                InkWell(
+                  onTap: getGalleryImage,
+                  child: Container(
+                    padding: EdgeInsets.fromLTRB(10, 20, 10, 10),
+                    margin: EdgeInsets.fromLTRB(20, 20, 20, 20),
+                    color: Colors.grey,
+                    height: 110,
+                    width: 110,
+                    child: Column(
+                      children: [
+                        Icon(Icons.add),
+                        Text(
+                          '이미지\n추가',
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                // ElevatedButton(
+                //   onPressed: () async {
+                //     SharedPreferences prefs = await SharedPreferences.getInstance();
+                //     prefs.setString('pic', _image!.path);
+                //   },
+                //   child: Text("사진 저장"),
+                // ),
+                // ElevatedButton(
+                //   onPressed: () {
+                //     loadP();
+                //   },
+                //   child: Text("사진 불러오기"),
+                // ),
+              ],
+            ),
+
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                ElevatedButton(
                   onPressed: () {
-                    setState(() {
-                      // pages.add(const DiaryBlock());
-                    });
-                    // print(pages.length);
                     Navigator.pop(context);
                   },
-                  child: const Text('저장하기')),
-              ElevatedButton(
-                  onPressed: () {
-                    setState(() {
-                      // pages = pages.sublist(0, 1);
-                    });
-                    // print(pages.length);
-                    Navigator.pop(context);
-                  },
-                  child: const Text('초기화')),
-            ],
-          )
-          // Row(
-          //   mainAxisAlignment: MainAxisAlignment.center,
-          //   children: [
-          //     ElevatedButton(
-          //       onPressed: () async {
-          //         SharedPreferences prefs = await SharedPreferences.getInstance();
-          //         prefs.setString('word', controller.text);
-          //       },
-          //       child: Text("내용 저장"),
-          //     ),
-          //     ElevatedButton(
-          //       onPressed: () {
-          //         loadW();
-          //       },
-          //       child: Text("내용 불러오기"),
-          //     )
-          //   ],
-          // ),
-        ]),
+                  child: const Text('이전 화면으로'),
+                ),
+                SizedBox(
+                  width: 10,
+                ),
+                ElevatedButton(
+                    onPressed: () {
+                      setState(() {
+                        // pages.add(const DiaryBlock());
+                      });
+                      // print(pages.length);
+                      Navigator.pop(context);
+                    },
+                    child: const Text('저장하기')),
+              ],
+            ),
+            SizedBox(height: 40),
+            // Row(
+            //   mainAxisAlignment: MainAxisAlignment.center,
+            //   children: [
+            //     ElevatedButton(
+            //       onPressed: () async {
+            //         SharedPreferences prefs = await SharedPreferences.getInstance();
+            //         prefs.setString('word', controller.text);
+            //       },
+            //       child: Text("내용 저장"),
+            //     ),
+            //     ElevatedButton(
+            //       onPressed: () {
+            //         loadW();
+            //       },
+            //       child: Text("내용 불러오기"),
+            //     )
+            //   ],
+            // ),
+          ]),
+        ),
       ),
     );
   }
