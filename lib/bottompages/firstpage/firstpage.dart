@@ -62,13 +62,15 @@ class _FirstPageState extends State<FirstPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color.fromARGB(255, 246, 242, 243),
+      resizeToAvoidBottomInset: false,
       extendBodyBehindAppBar: true, // body 위에 appBar
       appBar: AppBar(
         centerTitle: true, // Title text 가운데 정렬
         leading: Container(
           margin: const EdgeInsets.all(10.0), // 여기에 마진 추가
           width: getProportionateScreenWidth(10),
-          height: getProportionateScreenHeight(20),
+          height: getProportionateScreenHeight(10),
           clipBehavior: Clip.antiAlias,
           decoration: const BoxDecoration(
             shape: BoxShape.circle,
@@ -91,100 +93,102 @@ class _FirstPageState extends State<FirstPage> {
         backgroundColor: Colors.transparent, // appBar 투명색
         elevation: 0.0, // appBar 그림자 농도 설정 (값 0으로 제거)
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Container(
-          decoration: const BoxDecoration(
-              // gradient: LinearGradient(
-              //   begin: Alignment.topLeft,
-              //   end: Alignment.bottomRight,
-              //   colors: [
-              //     Color.fromRGBO(223, 113, 186, 0),
-              //     Colors.white,
-              //   ],
-              // ),
-              ),
-          child: Column(
-            children: [
-              SizedBox(height: getProportionateScreenHeight(100)),
-              TableCalendar(
-                rowHeight: 100,
-                headerStyle: HeaderStyle(
-                  titleCentered: true,
-                  titleTextFormatter: (date, locale) =>
-                      DateFormat.MMMM(locale).format(date),
-                  formatButtonVisible: false,
-                  leftChevronVisible: true,
-                  rightChevronVisible: true,
-                  titleTextStyle:
-                      const TextStyle(color: Colors.black, fontSize: 25),
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(0.0),
+          child: Container(
+            decoration: const BoxDecoration(
+                // gradient: LinearGradient(
+                //   begin: Alignment.topLeft,
+                //   end: Alignment.bottomRight,
+                //   colors: [
+                //     Color.fromRGBO(223, 113, 186, 0),
+                //     Colors.white,
+                //   ],
+                // ),
                 ),
-                calendarStyle: const CalendarStyle(
-                  isTodayHighlighted: true,
-                  defaultTextStyle: TextStyle(
-                    color: Colors.black, // 기본 날짜의 검은색 텍스트
-                    fontSize: 16.0,
+            child: Column(
+              children: [
+                SizedBox(height: getProportionateScreenHeight(65)),
+                TableCalendar(
+                  rowHeight: 100,
+                  headerStyle: HeaderStyle(
+                    headerMargin: EdgeInsets.fromLTRB(0, 0, 0, 0),
+                    titleCentered: true,
+                    titleTextFormatter: (date, locale) =>
+                        DateFormat.MMMM(locale).format(date),
+                    formatButtonVisible: false,
+                    leftChevronVisible: true,
+                    rightChevronVisible: true,
+                    titleTextStyle:
+                        const TextStyle(color: Colors.black, fontSize: 25),
                   ),
-                  todayTextStyle: TextStyle(
-                    color: Colors.black, // 오늘 날짜의 검은색 텍스트
-                    fontSize: 16.0,
+                  calendarStyle: const CalendarStyle(
+                    isTodayHighlighted: true,
+                    defaultTextStyle: TextStyle(
+                      color: Colors.black, // 기본 날짜의 검은색 텍스트
+                      fontSize: 16.0,
+                    ),
+                    todayTextStyle: TextStyle(
+                      color: Colors.black, // 오늘 날짜의 검은색 텍스트
+                      fontSize: 16.0,
+                    ),
+                    todayDecoration: BoxDecoration(
+                      color: Colors.transparent, // 오늘 날짜의 투명 배경
+                      shape: BoxShape.circle,
+                    ),
+                    selectedDecoration: BoxDecoration(
+                      color: Color(0xFFF05B88),
+                      shape: BoxShape.circle,
+                    ),
+                    selectedTextStyle: TextStyle(
+                      color: Color(0xFFFAFAFA),
+                      fontSize: 16.0,
+                    ),
                   ),
-                  todayDecoration: BoxDecoration(
-                    color: Colors.transparent, // 오늘 날짜의 투명 배경
+                  locale: 'ko_KR',
+                  firstDay: _firstDay,
+                  lastDay: _lastDay,
+                  focusedDay: _focusedDay,
+                  calendarFormat: CalendarFormat.week,
+                  selectedDayPredicate: (day) {
+                    return isSameDay(_selectedDay, day);
+                  },
+                  onDaySelected: _onDaySelected,
+                  onPageChanged: (focusedDay) {
+                    setState(() {
+                      _focusedDay = focusedDay;
+                      _currentMonth = DateFormat.MMMM()
+                          .format(_focusedDay); // 페이지 변경 시 달 업데이트
+                    });
+                  },
+                ),
+                Container(
+                  width: 250,
+                  height: 250,
+                  alignment: Alignment.center,
+                  decoration: const BoxDecoration(
                     shape: BoxShape.circle,
+                    color: Color.fromARGB(255, 241, 140, 189),
                   ),
-                  selectedDecoration: BoxDecoration(
-                    color: Color(0xFFF05B88),
-                    shape: BoxShape.circle,
+                  child: Text(
+                    _difference != null
+                        ? 'D+${-_difference! + 1}' // _difference 상태 변수를 사용
+                        : 'Loading...',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(fontSize: 40, color: Colors.white),
                   ),
-                  selectedTextStyle: TextStyle(
-                    color: Color(0xFFFAFAFA),
-                    fontSize: 16.0,
+                ),
+                SizedBox(height: 30),
+                SizedBox(
+                  height: 160,
+                  child: ListView(
+                    scrollDirection: Axis.horizontal,
+                    children: pages,
                   ),
                 ),
-                locale: 'ko_KR',
-                firstDay: _firstDay,
-                lastDay: _lastDay,
-                focusedDay: _focusedDay,
-                calendarFormat: CalendarFormat.week,
-                selectedDayPredicate: (day) {
-                  return isSameDay(_selectedDay, day);
-                },
-                onDaySelected: _onDaySelected,
-                onPageChanged: (focusedDay) {
-                  setState(() {
-                    _focusedDay = focusedDay;
-                    _currentMonth = DateFormat.MMMM()
-                        .format(_focusedDay); // 페이지 변경 시 달 업데이트
-                  });
-                },
-              ),
-              Container(
-                width: 200,
-                height: 200,
-                alignment: Alignment.center,
-                decoration: const BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: Color.fromARGB(255, 255, 160, 249),
-                ),
-                child: Text(
-                  _difference != null
-                      ? 'D+${-_difference! + 1}' // _difference 상태 변수를 사용
-                      : 'Loading...',
-                  textAlign: TextAlign.center,
-                ),
-              ),
-              const SizedBox(
-                height: 70,
-              ),
-              SizedBox(
-                height: 160,
-                child: ListView(
-                  scrollDirection: Axis.horizontal,
-                  children: pages,
-                ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
@@ -205,9 +209,10 @@ class diary extends StatelessWidget {
           width: 10,
         ),
         Container(
-          width: 160,
+          width: 150,
           decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(20), color: Colors.lightBlue),
+              borderRadius: BorderRadius.circular(20),
+              color: Color.fromARGB(255, 245, 200, 218)),
           child: Column(
             children: [
               SizedBox(
@@ -216,14 +221,8 @@ class diary extends StatelessWidget {
               IconButton(
                 onPressed: () => showDialog<String>(
                   context: context,
-                  builder: (BuildContext context) => const Dialog.fullscreen(
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        pop_up_window(),
-                      ],
-                    ),
+                  builder: (BuildContext context) => const Dialog(
+                    child: pop_up_window(),
                   ),
                 ),
                 icon: const Icon(Icons.add),
@@ -261,7 +260,7 @@ class test extends StatelessWidget {
         ),
         Container(
           padding: const EdgeInsets.all(5),
-          width: 160,
+          width: 150,
           decoration: BoxDecoration(
             image: const DecorationImage(
               opacity: 0.4,
