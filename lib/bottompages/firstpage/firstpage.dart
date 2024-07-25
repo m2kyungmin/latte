@@ -19,6 +19,7 @@ class _FirstPageState extends State<FirstPage> {
   late DateTime _lastDay;
   DateTime? _selectedDay;
   int? _difference;
+  // ignore: unused_field
   late String _currentMonth;
   bool _showFullCalendar = false;
   List<Map<String, String>> entries = []; // 일기 항목을 저장할 리스트
@@ -272,6 +273,7 @@ class _FirstPageState extends State<FirstPage> {
                                         image: FileImage(
                                             File(entryData['imagePath']!)),
                                         fit: BoxFit.cover,
+                                        opacity: 0.5,
                                         colorFilter: ColorFilter.mode(
                                           Colors.black.withOpacity(0.3),
                                           BlendMode.darken,
@@ -285,7 +287,9 @@ class _FirstPageState extends State<FirstPage> {
                                                 getProportionateScreenHeight(
                                                     25)),
                                         Text(
-                                          entryData['title']!,
+                                          entryData['title']!.length > 7
+                                              ? '${entryData['title']!.substring(0, 7)}...'
+                                              : entryData['title']!,
                                           style: const TextStyle(
                                             fontWeight: FontWeight.bold,
                                             color: Colors.white,

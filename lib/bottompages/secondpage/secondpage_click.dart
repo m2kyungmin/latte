@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:expand_widget/expand_widget.dart';
 
 class SecClick extends StatefulWidget {
   const SecClick({super.key});

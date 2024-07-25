@@ -31,6 +31,7 @@ class _SecondPageState extends State<SecondPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color.fromARGB(255, 252, 246, 248),
       body: SingleChildScrollView(
         child: TableCalendar(
           daysOfWeekHeight: 60,
@@ -60,6 +61,7 @@ class _SecondPageState extends State<SecondPage> {
             formatButtonVisible: false,
           ),
           calendarStyle: const CalendarStyle(
+            rangeHighlightColor: Color.fromARGB(255, 252, 246, 248),
             canMarkersOverflow: false,
             markersAutoAligned: true,
             markersAlignment: Alignment.bottomCenter,

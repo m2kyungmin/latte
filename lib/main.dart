@@ -18,9 +18,10 @@ class HeartPlanner extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      theme: ThemeData(fontFamily: 'MangoDdobak'),
       debugShowCheckedModeBanner: false,
       //darkTheme: ThemeData.dark(),
-      //themeMode: ThemeMode.dark,
+      themeMode: ThemeMode.system,
       home: AnimatedSplashScreen(
         centered: true,
         splash:
