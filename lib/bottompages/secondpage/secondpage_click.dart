@@ -17,7 +17,7 @@ class _SecClickState extends State<SecClick> {
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
             Navigator.pop(context);
-            // Navigator.push(context, MaterialPageRoute(builder: (context) => OtherPage()));
+            //Navigator.push(context, MaterialPageRoute(builder: (context) => OtherPage()));
           },
         ),
         title: const Text('provider로 클릭한 날 전달하기'),

@@ -7,7 +7,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:async';
 import 'dart:io';
 
-class AccountScreen extends StatefulWidget {
+class AccountScreen extends StatefulWidget { //설정 창 클래스
   const AccountScreen(
       {super.key,
         required this.NameValue,
@@ -28,6 +28,7 @@ class _AccountScreenState extends State<AccountScreen> {
   bool isSwitched = false;
   String dropdownValue = '한국어';
 
+  // 알림, 언어변경 버튼
   _save() async {
     await prefs.setBool('switch', isSwitched);
     await prefs.setString('dropdown', dropdownValue);
@@ -37,7 +38,11 @@ class _AccountScreenState extends State<AccountScreen> {
     prefs = await SharedPreferences.getInstance();
     isSwitched = prefs.getBool('switch') ?? false;
     dropdownValue = prefs.getString('dropdown') ?? '';
-    setState(() {});
+    setState(() {
+      if(dropdownValue != null){
+        dropdownValue = '한국어';
+      }
+    });
   }
 
   void initState() {
@@ -355,7 +360,7 @@ class _AccountScreenState extends State<AccountScreen> {
   }
 }
 
-class EditAccountScreen extends StatefulWidget {
+class EditAccountScreen extends StatefulWidget { // 프로필 창 클래스
   const EditAccountScreen({super.key});
 
   State<EditAccountScreen> createState() => _EditAccountScreenState();
@@ -369,6 +374,7 @@ class _EditAccountScreenState extends State<EditAccountScreen> {
 
   late SharedPreferences _prefs;
 
+  // 이름, 나이, 이메일
   String text = '';
   final TextEditingController text_Controller = TextEditingController();
 
@@ -406,7 +412,7 @@ class _EditAccountScreenState extends State<EditAccountScreen> {
     });
   }
 
-  Future getGalleryImage() async {
+  Future getGalleryImage() async { // 이미지 picker
     var image = await ImagePicker().pickImage(source: ImageSource.camera);
     setState(() {
       _image = image;
@@ -705,12 +711,12 @@ class _EditAccountScreenState extends State<EditAccountScreen> {
   }
 }
 
-void main() {
-  WidgetsFlutterBinding.ensureInitialized();
-  runApp(const MyApp());
-}
+// void main() {
+//   WidgetsFlutterBinding.ensureInitialized();
+//   runApp(const MyApp());
+// }
 
-class UiProvider extends ChangeNotifier {
+class UiProvider extends ChangeNotifier { // 다크 모드
   bool _isDark = false;
   bool get isDark => _isDark;
   late SharedPreferences storage;
@@ -739,7 +745,7 @@ class UiProvider extends ChangeNotifier {
   }
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatelessWidget { // Main 클래스
   const MyApp({super.key});
 
   Widget build(BuildContext context) {
@@ -757,7 +763,7 @@ class MyApp extends StatelessWidget {
                 ColorScheme.fromSeed(seedColor: Colors.lightBlueAccent),
             useMaterial3: true,
           ),
-          home: EditAccountScreen(),
+          home: EditAccountScreen(), // 홈 화면은 프로필 창
         );
       }),
     );

@@ -6,9 +6,13 @@ import 'bottompages/firstpage/firstpage.dart';
 import 'bottompages/secondpage/secondpage.dart';
 import 'bottompages/thirdpage.dart';
 import 'package:intl/date_symbol_data_local.dart';
+import 'bottompages/Setting_Screen.dart';
+import 'package:flutter/cupertino.dart';
+
 
 void main() async {
   await initializeDateFormatting();
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(const HeartPlanner());
 }
 
@@ -53,7 +57,8 @@ class _MyWidgetState extends State<MyWidget> {
   List<Widget> pages = <Widget>[
     const FirstPage(),
     const SecondPage(),
-    const ThirdPage(),
+    //const ThirdPage(),
+    const MyApp(),
     const SecClick()
   ];
 
