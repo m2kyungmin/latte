@@ -1,3 +1,5 @@
+// ignore_for_file: depend_on_referenced_packages
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:ionicons/ionicons.dart';
@@ -10,10 +12,10 @@ import 'dart:io';
 class AccountScreen extends StatefulWidget {
   const AccountScreen(
       {super.key,
-        required this.NameValue,
-        required this.AgeValue,
-        required this.EmailValue,
-        required this.ImageValue});
+      required this.NameValue,
+      required this.AgeValue,
+      required this.EmailValue,
+      required this.ImageValue});
 
   final String NameValue;
   final String AgeValue;
@@ -106,12 +108,11 @@ class _AccountScreenState extends State<AccountScreen> {
                             ),
                           ),
                           Text(
-                              widget.AgeValue,
+                            widget.AgeValue,
                             style: TextStyle(
                               fontWeight: FontWeight.w500,
                             ),
                           ),
-
                           const SizedBox(
                             height: 10,
                           ),
@@ -119,7 +120,7 @@ class _AccountScreenState extends State<AccountScreen> {
                       ),
                       const Spacer(),
                       Text(
-                          widget.EmailValue,
+                        widget.EmailValue,
                         style: TextStyle(
                           fontWeight: FontWeight.w500,
                         ),

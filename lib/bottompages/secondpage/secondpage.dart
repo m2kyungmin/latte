@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
 import 'package:latte/bottompages/secondpage/secondpage_click.dart';
 import 'package:table_calendar/table_calendar.dart';
@@ -32,7 +31,6 @@ class _SecondPageState extends State<SecondPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
       body: SingleChildScrollView(
         child: TableCalendar(
           daysOfWeekHeight: 60,
@@ -92,7 +90,7 @@ class _SecondPageState extends State<SecondPage> {
                   bottom: 1,
                   child: Icon(
                     Icons.favorite,
-                    color: Colors.pink.withOpacity(0.3), // 불투명도를 0.5로 설정
+                    color: Color(0xFFF05B88), // 불투명도를 0.5로 설정
                     size: 50,
                   ),
                 );
@@ -136,7 +134,7 @@ class _SecondPageState extends State<SecondPage> {
                         width: 30,
                         height: 30,
                         decoration: const BoxDecoration(
-                          color: Color.fromARGB(255, 242, 154, 147),
+                          color: Color.fromARGB(255, 255, 215, 227),
                           shape: BoxShape.circle,
                         ),
                       ),
@@ -158,7 +156,7 @@ class _SecondPageState extends State<SecondPage> {
               return Container(
                 alignment: Alignment.topCenter, // 선택된 날짜 글씨를 가운데 상단으로 위치 조정
                 decoration: const BoxDecoration(
-                  color: Color.fromARGB(255, 239, 239, 239),
+                  color: Color.fromARGB(255, 228, 228, 228),
                   shape: BoxShape.rectangle,
                 ),
                 child: Text(

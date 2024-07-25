@@ -92,8 +92,9 @@ class _MyWidgetState extends State<MyWidget> {
             label: '설정',
           ),
         ],
-        selectedItemColor: Colors.green,
-        selectedIconTheme: const IconThemeData(color: Colors.green),
+        selectedItemColor: Color.fromARGB(255, 247, 109, 150),
+        selectedIconTheme:
+            const IconThemeData(color: Color.fromARGB(255, 247, 109, 150)),
         unselectedItemColor: Colors.black,
         currentIndex: selectedIndex,
         onTap: onItemTapped,
