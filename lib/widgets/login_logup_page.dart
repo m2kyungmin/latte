@@ -1,5 +1,6 @@
-import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
  return runApp(MyApp());
@@ -18,7 +19,42 @@ class MyApp extends StatelessWidget {
 
 // 로그인 창
 
-class LoginPage extends StatelessWidget{
+class LoginPage extends StatefulWidget{
+
+  State<LoginPage> createState() => _LoginPage();
+}
+
+class _LoginPage extends State<LoginPage> {
+
+  late SharedPreferences _prefs;
+
+  String Login_ID = "";
+  final TextEditingController Login_IDController = TextEditingController();
+  String Login_password = "";
+  final TextEditingController Login_passwordController = TextEditingController();
+
+  void initState() {
+    super.initState();
+    getinitState();
+  }
+
+  _save() {
+    setState(() {
+      Login_ID = Login_IDController.text;
+      _prefs.setString('currentLogin_ID', Login_ID);
+      Login_password = Login_passwordController.text;
+      _prefs.setString('currentLogin_password', Login_password);
+    });
+  }
+
+  getinitState() async {
+    _prefs = await SharedPreferences.getInstance();
+    setState(() {
+      Login_ID = _prefs.getString('currentLogin_ID') ?? '';
+      Login_password = _prefs.getString('currentLogin_password') ?? '';
+    });
+  }
+
   Widget build(BuildContext context){
     return MaterialApp(
         home: Scaffold(
@@ -34,16 +70,17 @@ class LoginPage extends StatelessWidget{
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         SizedBox(height: 50,),
-                        Text('Welcome',style: TextStyle(fontSize: 26,fontWeight: FontWeight.bold),),
+                        Text('환영합니다',style: TextStyle(fontSize: 26,fontWeight: FontWeight.bold),),
                         SizedBox(height: 6,),
-                        Text('Sign in to continue!',style: TextStyle(fontSize: 20,color: Colors.grey.shade400),),
+                        Text('로그인 하세요!',style: TextStyle(fontSize: 20,color: Colors.grey.shade400),),
                       ],
                     ),
                     Column(
                       children: <Widget>[
                         TextField(
+                          controller: Login_IDController,
                           decoration: InputDecoration(
-                              labelText: 'Email ID',
+                              labelText: '아이디',
                               labelStyle: TextStyle(fontSize: 14,color: Colors.grey.shade400),
                               enabledBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(10),
@@ -63,8 +100,9 @@ class LoginPage extends StatelessWidget{
                         SizedBox(height: 16,),
 
                         TextField(
+                          controller: Login_passwordController,
                           decoration: InputDecoration(
-                              labelText: 'Password',
+                              labelText: '비밀번호',
                               labelStyle: TextStyle(fontSize: 14,color: Colors.grey.shade400),
                               enabledBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(10),
@@ -85,7 +123,7 @@ class LoginPage extends StatelessWidget{
 
                         Align(
                           alignment: Alignment.topRight,
-                          child: Text('Forgot Password',style: TextStyle(fontSize: 14,fontWeight: FontWeight.w600),),
+                          child: Text('비밀번호 찾기',style: TextStyle(fontSize: 14,fontWeight: FontWeight.w600),),
                         ),
 
                         SizedBox(height: 30,),
@@ -94,7 +132,9 @@ class LoginPage extends StatelessWidget{
                           height: 50,
                           width: double.infinity,
                           child: TextButton(
-                            onPressed: (){},
+                            onPressed: (){
+                              _save();
+                            },
                             child: Ink(
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(6),
@@ -111,7 +151,7 @@ class LoginPage extends StatelessWidget{
                               child: Container(
                                 alignment: Alignment.center,
                                 constraints: BoxConstraints(maxWidth: double.infinity,minHeight: 50),
-                                child: Text('Login',style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold,),textAlign: TextAlign.center,),
+                                child: Text('로그인',style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold,),textAlign: TextAlign.center,),
 
                               ),
                             ),
@@ -128,12 +168,12 @@ class LoginPage extends StatelessWidget{
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
-                          Text("I'am a new user.",style: TextStyle(fontWeight: FontWeight.bold),),
+                          Text("새로운 멤버 ",style: TextStyle(fontWeight: FontWeight.bold),),
                           GestureDetector(
                             onTap: (){
                               Navigator.push(context, MaterialPageRoute(builder: (context) => SignupPage()));
                             },
-                            child: Text("Sign up.",style: TextStyle(fontWeight: FontWeight.bold,color: Colors.red),),
+                            child: Text("회원가입.",style: TextStyle(fontWeight: FontWeight.bold,color: Colors.red),),
                           )
                         ],
                       ),
@@ -149,7 +189,48 @@ class LoginPage extends StatelessWidget{
 
 // 회원가입 창
 
-class SignupPage extends StatelessWidget{
+class SignupPage extends StatefulWidget{
+
+  State<SignupPage> createState() => _SignupPage();
+}
+
+class _SignupPage extends State<SignupPage> {
+
+  late SharedPreferences _prefs;
+
+  String Logup_Name = "";
+  final TextEditingController Logup_NameController = TextEditingController();
+  String Logup_ID = "";
+  final TextEditingController Logup_IDController = TextEditingController();
+  String Logup_password = "";
+  final TextEditingController Logup_passwordController = TextEditingController();
+
+  void initState() {
+    super.initState();
+    getinitState();
+  }
+
+  _save() {
+    setState(() {
+      Logup_Name = Logup_NameController.text;
+      _prefs.setString('currentLogin_ID', Logup_Name);
+      Logup_ID = Logup_IDController.text;
+      _prefs.setString('currentLogin_ID', Logup_ID);
+      Logup_password = Logup_passwordController.text;
+      _prefs.setString('currentLogin_password', Logup_password);
+    });
+  }
+
+  getinitState() async {
+    _prefs = await SharedPreferences.getInstance();
+    setState(() {
+      Logup_Name = _prefs.getString('currentLogup_Name') ?? '';
+      Logup_ID = _prefs.getString('currentLogup_ID') ?? '';
+      Logup_password = _prefs.getString('currentLogup_password') ?? '';
+    });
+  }
+
+
   Widget build(BuildContext context){
     return MaterialApp(
       home: Scaffold(
@@ -165,16 +246,17 @@ class SignupPage extends StatelessWidget{
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     SizedBox(height: 50,),
-                    Text("Create Account",style: TextStyle(fontSize: 26,fontWeight: FontWeight.bold),),
+                    Text("회원가입",style: TextStyle(fontSize: 26,fontWeight: FontWeight.bold),),
                     SizedBox(height: 6,),
-                    Text('Sign up to get started!',style: TextStyle(fontSize: 20,color: Colors.grey.shade400),),
+                    Text('회원가입 하세요!',style: TextStyle(fontSize: 20,color: Colors.grey.shade400),),
                   ],
                 ),
                 Column(
                   children: <Widget>[
                     TextField(
+                      controller: Logup_NameController,
                       decoration: InputDecoration(
-                        labelText: 'Full Name',
+                        labelText: '이름',
                         labelStyle: TextStyle(fontSize: 14,color: Colors.grey.shade400,fontWeight: FontWeight.w600),
                         enabledBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10),
@@ -189,8 +271,9 @@ class SignupPage extends StatelessWidget{
                     ),
                     SizedBox(height: 16,),
                     TextField(
+                      controller: Logup_IDController,
                       decoration: InputDecoration(
-                        labelText: 'Email ID',
+                        labelText: '아이디',
                         labelStyle: TextStyle(fontSize: 14,color: Colors.grey.shade400,fontWeight: FontWeight.w600),
                         enabledBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10),
@@ -205,9 +288,10 @@ class SignupPage extends StatelessWidget{
                     ),
                     SizedBox(height: 16,),
                     TextField(
+                      controller: Logup_passwordController,
                       obscureText: true,
                       decoration: InputDecoration(
-                        labelText: 'Password',
+                        labelText: '비밀번호',
                         labelStyle: TextStyle(fontSize: 14,color: Colors.grey.shade400,fontWeight: FontWeight.w600),
                         enabledBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10),
@@ -225,7 +309,9 @@ class SignupPage extends StatelessWidget{
                       padding: EdgeInsets.all(0),
                       height: 50,
                       child: TextButton(
-                        onPressed: (){},
+                        onPressed: (){
+                          _save();
+                        },
                         // shape: RoundedRectangleBorder(
                         //   borderRadius: BorderRadius.circular(6),
                         // ),
@@ -245,7 +331,7 @@ class SignupPage extends StatelessWidget{
                           child: Container(
                             alignment: Alignment.center,
                             constraints: BoxConstraints(maxWidth: double.infinity,minHeight: 50),
-                            child: Text('Sign up',style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold,),textAlign: TextAlign.center,),
+                            child: Text('로그인',style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold,),textAlign: TextAlign.center,),
                           ),
                         ),
                       ),
@@ -258,12 +344,12 @@ class SignupPage extends StatelessWidget{
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
-                      Text("I'am already a member.",style: TextStyle(fontWeight: FontWeight.bold),),
+                      Text("멤버 ",style: TextStyle(fontWeight: FontWeight.bold),),
                       GestureDetector(
                         onTap: (){
                           Navigator.pop(context);
                         },
-                        child: Text("Sign in",style: TextStyle(fontWeight: FontWeight.bold,color: Colors.red),),
+                        child: Text("로그인",style: TextStyle(fontWeight: FontWeight.bold,color: Colors.red),),
                       )
                     ],
                   ),
