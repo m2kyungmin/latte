@@ -101,6 +101,7 @@ class _LoginPage extends State<LoginPage> {
 
                         TextField(
                           controller: Login_passwordController,
+                          obscureText: true,
                           decoration: InputDecoration(
                               labelText: '비밀번호',
                               labelStyle: TextStyle(fontSize: 14,color: Colors.grey.shade400),
@@ -331,7 +332,7 @@ class _SignupPage extends State<SignupPage> {
                           child: Container(
                             alignment: Alignment.center,
                             constraints: BoxConstraints(maxWidth: double.infinity,minHeight: 50),
-                            child: Text('로그인',style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold,),textAlign: TextAlign.center,),
+                            child: Text('회원가입',style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold,),textAlign: TextAlign.center,),
                           ),
                         ),
                       ),
