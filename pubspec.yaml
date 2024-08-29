@@ -46,6 +46,8 @@ dependencies:
 
   provider: ^6.1.2
   ionicons: ^0.2.2
+  # import 'package:google_maps_flutter/google_maps_flutter.dart';
+  google_maps_flutter: ^2.9.0
 
 dev_dependencies:
   flutter_test:

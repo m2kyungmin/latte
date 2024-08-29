@@ -5,6 +5,7 @@ import 'package:latte/size_config.dart';
 import 'bottompages/firstpage/firstpage.dart';
 import 'bottompages/secondpage/secondpage.dart';
 import 'bottompages/thirdpage.dart';
+import 'mapPage.dart';
 import 'package:intl/date_symbol_data_local.dart';
 
 void main() async {
@@ -55,7 +56,8 @@ class _MyWidgetState extends State<MyWidget> {
     const FirstPage(),
     const SecondPage(),
     const ThirdPage(),
-    const SecClick()
+    //const SecClick(),
+    const MapPage(),
   ];
 
   void onItemTapped(int index) {
@@ -85,6 +87,12 @@ class _MyWidgetState extends State<MyWidget> {
               Icons.favorite,
             ),
             label: '추천',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(
+              Icons.map,
+            ),
+            label: '지도',
           ),
           BottomNavigationBarItem(
             icon: Icon(
