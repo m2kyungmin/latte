@@ -8,18 +8,20 @@ import 'dart:async';
 import 'dart:io';
 
 class AccountScreen extends StatefulWidget {
+  //설정 창 클래스
   const AccountScreen(
       {super.key,
-        required this.NameValue,
-        required this.AgeValue,
-        required this.EmailValue,
-        required this.ImageValue});
+      required this.NameValue,
+      required this.AgeValue,
+      required this.EmailValue,
+      required this.ImageValue});
 
   final String NameValue;
   final String AgeValue;
   final String EmailValue;
   final String ImageValue;
 
+  @override
   State<AccountScreen> createState() => _AccountScreenState();
 }
 
@@ -28,6 +30,7 @@ class _AccountScreenState extends State<AccountScreen> {
   bool isSwitched = false;
   String dropdownValue = '한국어';
 
+  // 알림, 언어변경 버튼
   _save() async {
     await prefs.setBool('switch', isSwitched);
     await prefs.setString('dropdown', dropdownValue);
@@ -37,46 +40,64 @@ class _AccountScreenState extends State<AccountScreen> {
     prefs = await SharedPreferences.getInstance();
     isSwitched = prefs.getBool('switch') ?? false;
     dropdownValue = prefs.getString('dropdown') ?? '';
-    setState(() {});
+    setState(() {
+      dropdownValue = '한국어';
+    });
   }
 
+  @override
   void initState() {
     super.initState();
     getInitData();
   }
 
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          leading: IconButton(
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => EditAccountScreen()),
-              );
-            },
-            icon: Icon(Ionicons.chevron_back_outline),
-          ),
-        ),
+        backgroundColor: const Color.fromARGB(225, 246, 242, 243),
         body: SingleChildScrollView(
           child: Padding(
             padding: const EdgeInsets.all(30),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  '설정',
-                  style: TextStyle(
-                    fontSize: 36,
-                    fontWeight: FontWeight.bold,
-                  ),
+                const SizedBox(
+                  height: 20,
                 ),
+                SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Row(children: [
+                    const Text(
+                      '설정',
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 36,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const SizedBox(
+                      width: 225,
+                    ),
+                    IconButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const EditAccountScreen()),
+                        );
+                      },
+                      icon: const Icon(Ionicons.settings),
+                    ),
+                  ]),
+                ),
+
                 const SizedBox(
                   height: 40,
                 ),
-                Text(
+                const Text(
                   "프로필",
                   style: TextStyle(
+                    color: Colors.black,
                     fontSize: 24,
                     fontWeight: FontWeight.w500,
                   ),
@@ -84,7 +105,7 @@ class _AccountScreenState extends State<AccountScreen> {
                 const SizedBox(
                   height: 20,
                 ),
-                Container(
+                SizedBox(
                   width: double.infinity,
                   child: Row(
                     children: [
@@ -100,18 +121,17 @@ class _AccountScreenState extends State<AccountScreen> {
                         children: [
                           Text(
                             widget.NameValue,
-                            style: TextStyle(
+                            style: const TextStyle(
                               fontSize: 18,
                               fontWeight: FontWeight.w500,
                             ),
                           ),
                           Text(
-                              widget.AgeValue,
-                            style: TextStyle(
+                            widget.AgeValue,
+                            style: const TextStyle(
                               fontWeight: FontWeight.w500,
                             ),
                           ),
-
                           const SizedBox(
                             height: 10,
                           ),
@@ -119,8 +139,8 @@ class _AccountScreenState extends State<AccountScreen> {
                       ),
                       const Spacer(),
                       Text(
-                          widget.EmailValue,
-                        style: TextStyle(
+                        widget.EmailValue,
+                        style: const TextStyle(
                           fontWeight: FontWeight.w500,
                         ),
                       ),
@@ -148,9 +168,10 @@ class _AccountScreenState extends State<AccountScreen> {
                 const SizedBox(
                   height: 40,
                 ),
-                Text(
+                const Text(
                   '기본 설정',
                   style: TextStyle(
+                    color: Colors.black,
                     fontSize: 24,
                     fontWeight: FontWeight.w500,
                   ),
@@ -158,58 +179,59 @@ class _AccountScreenState extends State<AccountScreen> {
                 const SizedBox(
                   height: 20,
                 ),
-                Container(
-                  width: double.infinity,
-                  child: Row(
-                    children: [
-                      Container(
-                        height: 50,
-                        width: 50,
-                        decoration: BoxDecoration(
-                            shape: BoxShape.circle, color: Colors.red.shade200),
-                        child: Icon(
-                          Icons.dark_mode,
-                          color: Colors.red,
-                        ),
-                      ),
-                      const SizedBox(
-                        width: 20,
-                      ),
-                      Text(
-                        '다크 모드',
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                      const Spacer(),
-                      const SizedBox(
-                        width: 20,
-                      ),
-                      Consumer<UiProvider>(
-                        builder: (context, UiProvider notifier, child) {
-                          return GestureDetector(
-                            onTap: () {},
-                            child: Container(
-                              width: 60,
-                              height: 60,
-                              child: Switch(
-                                value: notifier.isDark,
-                                onChanged: (value) {
-                                  notifier.changeTheme();
-                                },
-                              ),
-                            ),
-                          );
-                        },
-                      ),
-                    ],
-                  ),
-                ),
+                // Container(
+                //   width: double.infinity,
+                //   child: Row(
+                //     children: [
+                //       Container(
+                //         height: 50,
+                //         width: 50,
+                //         decoration: BoxDecoration(
+                //             shape: BoxShape.circle, color: Colors.red.shade200),
+                //         child: Icon(
+                //           Icons.dark_mode,
+                //           color: Colors.red,
+                //         ),
+                //       ),
+                //       const SizedBox(
+                //         width: 20,
+                //       ),
+                //       Text(
+                //         '다크 모드',
+                //         style: TextStyle(
+                //           color: Colors.black,
+                //           fontSize: 16.0,
+                //           fontWeight: FontWeight.w500,
+                //         ),
+                //       ),
+                //       const Spacer(),
+                //       const SizedBox(
+                //         width: 20,
+                //       ),
+                //       Consumer<UiProvider>(
+                //         builder: (context, UiProvider notifier, child) {
+                //           return GestureDetector(
+                //             onTap: () {},
+                //             child: Container(
+                //               width: 60,
+                //               height: 60,
+                //               child: Switch(
+                //                 value: notifier.isDark,
+                //                 onChanged: (value) {
+                //                   notifier.changeTheme();
+                //                 },
+                //               ),
+                //             ),
+                //           );
+                //         },
+                //       ),
+                //     ],
+                //   ),
+                // ),
                 const SizedBox(
                   height: 20,
                 ),
-                Container(
+                SizedBox(
                   width: double.infinity,
                   child: Row(
                     children: [
@@ -219,7 +241,7 @@ class _AccountScreenState extends State<AccountScreen> {
                         decoration: BoxDecoration(
                             shape: BoxShape.circle,
                             color: Colors.blue.shade200),
-                        child: Icon(
+                        child: const Icon(
                           Ionicons.notifications,
                           color: Colors.blue,
                         ),
@@ -227,10 +249,11 @@ class _AccountScreenState extends State<AccountScreen> {
                       const SizedBox(
                         width: 20,
                       ),
-                      Text(
+                      const Text(
                         '알림',
                         style: TextStyle(
-                          fontSize: 16,
+                          color: Colors.black,
+                          fontSize: 16.0,
                           fontWeight: FontWeight.w500,
                         ),
                       ),
@@ -240,7 +263,7 @@ class _AccountScreenState extends State<AccountScreen> {
                       ),
                       GestureDetector(
                         onTap: () {},
-                        child: Container(
+                        child: SizedBox(
                           width: 60,
                           height: 60,
                           child: Switch(
@@ -259,7 +282,7 @@ class _AccountScreenState extends State<AccountScreen> {
                 const SizedBox(
                   height: 20,
                 ),
-                Container(
+                SizedBox(
                   width: double.infinity,
                   child: Row(
                     children: [
@@ -269,7 +292,7 @@ class _AccountScreenState extends State<AccountScreen> {
                         decoration: BoxDecoration(
                             shape: BoxShape.circle,
                             color: Colors.orange.shade200),
-                        child: Icon(
+                        child: const Icon(
                           Ionicons.earth,
                           color: Colors.orange,
                         ),
@@ -277,10 +300,11 @@ class _AccountScreenState extends State<AccountScreen> {
                       const SizedBox(
                         width: 20,
                       ),
-                      Text(
+                      const Text(
                         '언어',
                         style: TextStyle(
-                          fontSize: 16,
+                          color: Colors.black,
+                          fontSize: 16.0,
                           fontWeight: FontWeight.w500,
                         ),
                       ),
@@ -305,7 +329,8 @@ class _AccountScreenState extends State<AccountScreen> {
                             child: Text(
                               '한국어',
                               style: TextStyle(
-                                fontSize: 16,
+                                color: Colors.black,
+                                fontSize: 16.0,
                                 fontWeight: FontWeight.w500,
                               ),
                             ),
@@ -315,7 +340,8 @@ class _AccountScreenState extends State<AccountScreen> {
                             child: Text(
                               'English',
                               style: TextStyle(
-                                fontSize: 16,
+                                color: Colors.black,
+                                fontSize: 16.0,
                                 fontWeight: FontWeight.w500,
                               ),
                             ),
@@ -325,7 +351,8 @@ class _AccountScreenState extends State<AccountScreen> {
                             child: Text(
                               '中國語',
                               style: TextStyle(
-                                fontSize: 16,
+                                color: Colors.black,
+                                fontSize: 16.0,
                                 fontWeight: FontWeight.w500,
                               ),
                             ),
@@ -335,7 +362,8 @@ class _AccountScreenState extends State<AccountScreen> {
                             child: Text(
                               '日本語',
                               style: TextStyle(
-                                fontSize: 16,
+                                color: Colors.black,
+                                fontSize: 16.0,
                                 fontWeight: FontWeight.w500,
                               ),
                             ),
@@ -356,8 +384,10 @@ class _AccountScreenState extends State<AccountScreen> {
 }
 
 class EditAccountScreen extends StatefulWidget {
+  // 프로필 창 클래스
   const EditAccountScreen({super.key});
 
+  @override
   State<EditAccountScreen> createState() => _EditAccountScreenState();
 }
 
@@ -369,6 +399,7 @@ class _EditAccountScreenState extends State<EditAccountScreen> {
 
   late SharedPreferences _prefs;
 
+  // 이름, 나이, 이메일
   String text = '';
   final TextEditingController text_Controller = TextEditingController();
 
@@ -378,6 +409,7 @@ class _EditAccountScreenState extends State<EditAccountScreen> {
   String email = '';
   final TextEditingController email_Controller = TextEditingController();
 
+  @override
   void initState() {
     super.initState();
     getinitState();
@@ -407,6 +439,7 @@ class _EditAccountScreenState extends State<EditAccountScreen> {
   }
 
   Future getGalleryImage() async {
+    // 이미지 picker
     var image = await ImagePicker().pickImage(source: ImageSource.camera);
     setState(() {
       _image = image;
@@ -425,9 +458,13 @@ class _EditAccountScreenState extends State<EditAccountScreen> {
     });
   }
 
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
+        backgroundColor: const Color.fromARGB(225, 246, 242, 243),
         appBar: AppBar(
+          backgroundColor: Colors.transparent,
+          elevation: 0.0,
           leading: IconButton(
             onPressed: () async {
               await Navigator.push(
@@ -440,7 +477,7 @@ class _EditAccountScreenState extends State<EditAccountScreen> {
                             ImageValue: _imagepath,
                           )));
             },
-            icon: Icon(Ionicons.chevron_back_outline),
+            icon: const Icon(Ionicons.chevron_back_outline),
           ),
           leadingWidth: 80,
           actions: [
@@ -452,14 +489,14 @@ class _EditAccountScreenState extends State<EditAccountScreen> {
                   Saveimage(_image!.path);
                 },
                 style: IconButton.styleFrom(
-                  backgroundColor: Colors.lightBlueAccent,
+                  backgroundColor: const Color.fromARGB(255, 245, 200, 218),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(15),
                   ),
-                  fixedSize: Size(60, 50),
+                  fixedSize: const Size(60, 50),
                   elevation: 3,
                 ),
-                icon: Icon(
+                icon: const Icon(
                   Ionicons.checkmark,
                   color: Colors.white,
                 ),
@@ -476,6 +513,7 @@ class _EditAccountScreenState extends State<EditAccountScreen> {
               const Text(
                 '프로필',
                 style: TextStyle(
+                  color: Colors.black,
                   fontSize: 36,
                   fontWeight: FontWeight.bold,
                 ),
@@ -490,8 +528,8 @@ class _EditAccountScreenState extends State<EditAccountScreen> {
                     child: Text(
                       '사진',
                       style: TextStyle(
-                        fontSize: 18,
-                        color: Colors.grey,
+                        fontSize: 16.0,
+                        color: Colors.black,
                       ),
                     ),
                   ),
@@ -517,7 +555,7 @@ class _EditAccountScreenState extends State<EditAccountScreen> {
                             child: const Text(
                               '사진 변경',
                               style: TextStyle(
-                                fontSize: 16,
+                                fontSize: 16.0,
                                 fontWeight: FontWeight.w500,
                               ),
                             ),
@@ -536,8 +574,8 @@ class _EditAccountScreenState extends State<EditAccountScreen> {
                     child: Text(
                       '성별',
                       style: TextStyle(
-                        fontSize: 18,
-                        color: Colors.grey,
+                        fontSize: 16.0,
+                        color: Colors.black,
                       ),
                     ),
                   ),
@@ -601,8 +639,8 @@ class _EditAccountScreenState extends State<EditAccountScreen> {
                     child: Text(
                       '이름',
                       style: TextStyle(
-                        fontSize: 18,
-                        color: Colors.grey,
+                        fontSize: 16.0,
+                        color: Colors.black,
                       ),
                     ),
                   ),
@@ -614,12 +652,12 @@ class _EditAccountScreenState extends State<EditAccountScreen> {
                             controller: text_Controller,
                             decoration: InputDecoration(
                               labelText: '이름을 입력하세요',
-                              border: OutlineInputBorder(),
+                              border: const OutlineInputBorder(),
                               suffixIcon: IconButton(
                                 onPressed: () {
                                   text_Controller.clear();
                                 },
-                                icon: Icon(Icons.clear),
+                                icon: const Icon(Icons.clear),
                               ),
                             ),
                           )
@@ -637,8 +675,8 @@ class _EditAccountScreenState extends State<EditAccountScreen> {
                     child: Text(
                       '나이',
                       style: TextStyle(
-                        fontSize: 18,
-                        color: Colors.grey,
+                        fontSize: 16.0,
+                        color: Colors.black,
                       ),
                     ),
                   ),
@@ -650,12 +688,12 @@ class _EditAccountScreenState extends State<EditAccountScreen> {
                             controller: age_Controller,
                             decoration: InputDecoration(
                               labelText: '나이를 입력하세요',
-                              border: OutlineInputBorder(),
+                              border: const OutlineInputBorder(),
                               suffixIcon: IconButton(
                                 onPressed: () {
                                   age_Controller.clear();
                                 },
-                                icon: Icon(Icons.clear),
+                                icon: const Icon(Icons.clear),
                               ),
                             ),
                           )
@@ -673,8 +711,8 @@ class _EditAccountScreenState extends State<EditAccountScreen> {
                     child: Text(
                       '이메일',
                       style: TextStyle(
-                        fontSize: 18,
-                        color: Colors.grey,
+                        fontSize: 16.0,
+                        color: Colors.black,
                       ),
                     ),
                   ),
@@ -686,12 +724,12 @@ class _EditAccountScreenState extends State<EditAccountScreen> {
                             controller: email_Controller,
                             decoration: InputDecoration(
                               labelText: '이메일을 입력하세요',
-                              border: OutlineInputBorder(),
+                              border: const OutlineInputBorder(),
                               suffixIcon: IconButton(
                                 onPressed: () {
                                   email_Controller.clear();
                                 },
-                                icon: Icon(Icons.clear),
+                                icon: const Icon(Icons.clear),
                               ),
                             ),
                           )
@@ -711,6 +749,7 @@ void main() {
 }
 
 class UiProvider extends ChangeNotifier {
+  // 다크 모드
   bool _isDark = false;
   bool get isDark => _isDark;
   late SharedPreferences storage;
@@ -740,8 +779,10 @@ class UiProvider extends ChangeNotifier {
 }
 
 class MyApp extends StatelessWidget {
+  // Main 클래스
   const MyApp({super.key});
 
+  @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
       create: (BuildContext context) => UiProvider()..init(),
@@ -757,7 +798,12 @@ class MyApp extends StatelessWidget {
                 ColorScheme.fromSeed(seedColor: Colors.lightBlueAccent),
             useMaterial3: true,
           ),
-          home: EditAccountScreen(),
+          home: const AccountScreen(
+            NameValue: '',
+            AgeValue: '',
+            EmailValue: '',
+            ImageValue: '',
+          ), // 홈 화면은 설정 창
         );
       }),
     );

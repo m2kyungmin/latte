@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "1074101022704",
+    "firebase_url": "https://hot-project-56080-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "hot-project-56080",
+    "storage_bucket": "hot-project-56080.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1074101022704:android:8ff67d98d6ea3c227a3735",
+        "android_client_info": {
+          "package_name": "com.example.heartplanner"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBcTPa0u6OsDD2FjbRu_XYkayV95Lby884"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

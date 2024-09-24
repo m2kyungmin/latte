@@ -43,8 +43,18 @@ dependencies:
   expand_widget: ^3.1.1
   image_picker: ^1.1.2
   shared_preferences: ^2.2.3
+
+  provider: ^6.1.2
   ionicons: ^0.2.2
-  provider: ^6.0.3
+  flutter_screenutil: ^5.9.3
+  flutter_svg: ^2.0.10+1
+  firebase_core: ^2.24.2
+  firebase_analytics: ^10.8.0
+  cloud_firestore: ^4.14.0
+  firebase_auth: ^4.16.0
+  google_sign_in: ^6.2.1
+  google_maps_flutter: ^2.9.0
+  fluttertoast: ^8.2.8
 
 dev_dependencies:
   flutter_test:
@@ -71,6 +81,7 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
     - assets/images/fall.png
+    - assets/images/image01.svg
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
@@ -97,3 +108,9 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
+  fonts:
+    - family: MangoDDobak
+      fonts:
+      - asset: assets\fonts\MangoDdobak-L(ttf).ttf
+        weight: 100
+      

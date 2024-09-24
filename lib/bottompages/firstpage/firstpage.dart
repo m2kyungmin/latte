@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:latte/size_config.dart';
@@ -17,7 +19,10 @@ class _FirstPageState extends State<FirstPage> {
   late DateTime _lastDay;
   DateTime? _selectedDay;
   int? _difference;
-  late String _currentMonth; // 현재 달 이름을 저장할 변수 추가
+  // ignore: unused_field
+  late String _currentMonth;
+  bool _showFullCalendar = false;
+  List<Map<String, String>> entries = []; // 일기 항목을 저장할 리스트
 
   @override
   void initState() {
@@ -28,16 +33,16 @@ class _FirstPageState extends State<FirstPage> {
     _lastDay =
         DateTime(_focusedDay.year + 1, _focusedDay.month, _focusedDay.day);
     _selectedDay = _focusedDay;
-    _difference = 0; // _difference 초기화
+    _difference = 0;
     _updateDifference();
-    _currentMonth = DateFormat.MMMM().format(_focusedDay); // _currentMonth 초기화
+    _currentMonth = DateFormat.MMMM().format(_focusedDay);
   }
 
   void _onDaySelected(DateTime selectedDay, DateTime focusedDay) {
     setState(() {
       _selectedDay = selectedDay;
-      _focusedDay = focusedDay; // _focusedDay 업데이트
-      _currentMonth = DateFormat.MMMM().format(_focusedDay); // 현재 달 이름 업데이트
+      _focusedDay = focusedDay;
+      _currentMonth = DateFormat.MMMM().format(_focusedDay);
       _updateDifference();
     });
     print("Selected day: $_selectedDay");
@@ -58,17 +63,43 @@ class _FirstPageState extends State<FirstPage> {
     });
   }
 
-  List<Widget> pages = [const diary(), const test()]; //위치수정필요.
+  void _toggleCalendarFormat() {
+    setState(() {
+      _showFullCalendar = !_showFullCalendar;
+    });
+  }
+
+  Future<void> _showPopup() async {
+    final result = await showDialog<Map<String, String>>(
+      context: context,
+      builder: (BuildContext context) => const Dialog(
+        child: pop_up_window(),
+      ),
+    );
+
+    if (result != null && result.isNotEmpty) {
+      setState(() {
+        entries.add(result);
+      });
+    }
+  }
+
+  void _removeEntry(int index) {
+    setState(() {
+      entries.removeAt(index);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color.fromARGB(255, 246, 242, 243),
+      backgroundColor: const Color.fromARGB(255, 252, 246, 248),
       resizeToAvoidBottomInset: false,
-      extendBodyBehindAppBar: true, // body 위에 appBar
+      extendBodyBehindAppBar: true,
       appBar: AppBar(
-        centerTitle: true, // Title text 가운데 정렬
+        centerTitle: true,
         leading: Container(
-          margin: const EdgeInsets.all(10.0), // 여기에 마진 추가
+          margin: const EdgeInsets.all(10.0),
           width: getProportionateScreenWidth(10),
           height: getProportionateScreenHeight(10),
           clipBehavior: Clip.antiAlias,
@@ -76,121 +107,242 @@ class _FirstPageState extends State<FirstPage> {
             shape: BoxShape.circle,
           ),
           child: Image.asset(
-            'assets/images/fall.png', // 이미지는 'assets' 폴더에 있는 것으로 가정
+            'assets/images/fall.png',
             fit: BoxFit.cover,
           ),
         ),
         actions: [
           Padding(
             padding: EdgeInsets.symmetric(
-                horizontal: getProportionateScreenWidth(8)), // Icon에 패딩 추가
-            child: const Icon(
-              Icons.calendar_month,
-              size: 35,
+                horizontal: getProportionateScreenWidth(8)),
+            child: IconButton(
+              icon: const Icon(Icons.calendar_month, size: 35),
+              onPressed: _toggleCalendarFormat,
             ),
           ),
         ],
-        backgroundColor: Colors.transparent, // appBar 투명색
-        elevation: 0.0, // appBar 그림자 농도 설정 (값 0으로 제거)
+        backgroundColor: Colors.transparent,
+        elevation: 0.0,
       ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(0.0),
-          child: Container(
-            decoration: const BoxDecoration(
-                // gradient: LinearGradient(
-                //   begin: Alignment.topLeft,
-                //   end: Alignment.bottomRight,
-                //   colors: [
-                //     Color.fromRGBO(223, 113, 186, 0),
-                //     Colors.white,
-                //   ],
-                // ),
-                ),
-            child: Column(
-              children: [
-                SizedBox(height: getProportionateScreenHeight(65)),
-                TableCalendar(
-                  rowHeight: 100,
-                  headerStyle: HeaderStyle(
-                    headerMargin: EdgeInsets.fromLTRB(0, 0, 0, 0),
-                    titleCentered: true,
-                    titleTextFormatter: (date, locale) =>
-                        DateFormat.MMMM(locale).format(date),
-                    formatButtonVisible: false,
-                    leftChevronVisible: true,
-                    rightChevronVisible: true,
-                    titleTextStyle:
-                        const TextStyle(color: Colors.black, fontSize: 25),
+      body: Column(
+        children: [
+          SizedBox(height: getProportionateScreenHeight(65)),
+          Expanded(
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  TableCalendar(
+                    daysOfWeekHeight: 18,
+                    rowHeight: 100,
+                    headerStyle: HeaderStyle(
+                      headerMargin: const EdgeInsets.fromLTRB(0, 0, 0, 0),
+                      titleCentered: true,
+                      titleTextFormatter: (date, locale) =>
+                          DateFormat.MMMM(locale).format(date),
+                      formatButtonVisible: false,
+                      leftChevronVisible: false,
+                      rightChevronVisible: false,
+                      titleTextStyle:
+                          const TextStyle(color: Colors.black, fontSize: 25),
+                    ),
+                    calendarStyle: const CalendarStyle(
+                      isTodayHighlighted: true,
+                      defaultTextStyle: TextStyle(
+                        color: Colors.black,
+                        fontSize: 16.0,
+                      ),
+                      todayTextStyle: TextStyle(
+                        color: Colors.black,
+                        fontSize: 16.0,
+                      ),
+                      todayDecoration: BoxDecoration(
+                        color: Colors.transparent,
+                        shape: BoxShape.circle,
+                      ),
+                      selectedDecoration: BoxDecoration(
+                        color: Color(0xFFF05B88),
+                        shape: BoxShape.circle,
+                      ),
+                      selectedTextStyle: TextStyle(
+                        color: Color(0xFFFAFAFA),
+                        fontSize: 16.0,
+                      ),
+                    ),
+                    locale: 'ko_KR',
+                    firstDay: _firstDay,
+                    lastDay: _lastDay,
+                    focusedDay: _focusedDay,
+                    calendarFormat: _showFullCalendar
+                        ? CalendarFormat.month
+                        : CalendarFormat.week,
+                    selectedDayPredicate: (day) {
+                      return isSameDay(_selectedDay, day);
+                    },
+                    onDaySelected: _onDaySelected,
+                    onPageChanged: (focusedDay) {
+                      setState(() {
+                        _focusedDay = focusedDay;
+                        _currentMonth = DateFormat.MMMM().format(_focusedDay);
+                      });
+                    },
                   ),
-                  calendarStyle: const CalendarStyle(
-                    isTodayHighlighted: true,
-                    defaultTextStyle: TextStyle(
-                      color: Colors.black, // 기본 날짜의 검은색 텍스트
-                      fontSize: 16.0,
-                    ),
-                    todayTextStyle: TextStyle(
-                      color: Colors.black, // 오늘 날짜의 검은색 텍스트
-                      fontSize: 16.0,
-                    ),
-                    todayDecoration: BoxDecoration(
-                      color: Colors.transparent, // 오늘 날짜의 투명 배경
+                  Container(
+                    width: 250,
+                    height: 250,
+                    alignment: Alignment.center,
+                    decoration: const BoxDecoration(
                       shape: BoxShape.circle,
+                      boxShadow: [
+                        BoxShadow(
+                          color: Color.fromARGB(255, 255, 223, 238),
+                        ),
+                        BoxShadow(
+                          color: Color.fromARGB(255, 245, 231, 239),
+                          spreadRadius: -22.0,
+                          blurRadius: 22.0,
+                        ),
+                      ],
                     ),
-                    selectedDecoration: BoxDecoration(
-                      color: Color(0xFFF05B88),
-                      shape: BoxShape.circle,
+                    child: Text(
+                      _difference != null
+                          ? 'D+${-_difference! + 1}'
+                          : 'Loading...',
+                      textAlign: TextAlign.center,
+                      style: const TextStyle(
+                        fontSize: 40,
+                        color: Color.fromARGB(255, 246, 158, 211),
+                      ),
                     ),
-                    selectedTextStyle: TextStyle(
-                      color: Color(0xFFFAFAFA),
-                      fontSize: 16.0,
+                  ),
+                  const SizedBox(height: 30),
+                  SizedBox(
+                    height: 150,
+                    child: ListView(
+                      scrollDirection: Axis.horizontal,
+                      children: [
+                        const SizedBox(
+                          width: 20,
+                        ),
+                        GestureDetector(
+                          onTap: _showPopup,
+                          child: Container(
+                            width: 150,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(20),
+                              color: const Color.fromARGB(255, 253, 179, 208),
+                            ),
+                            child: Column(
+                              children: [
+                                SizedBox(
+                                    height: getProportionateScreenHeight(25)),
+                                const Icon(Icons.add),
+                                SizedBox(
+                                    height: getProportionateScreenHeight(10)),
+                                const Text(
+                                  '추억 저장하러 가기!',
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.black,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        const SizedBox(width: 10),
+                        ...entries.asMap().entries.map((entry) {
+                          int index = entry.key;
+                          Map<String, String> entryData = entry.value;
+                          return MouseRegion(
+                            onEnter: (_) {
+                              setState(() {});
+                            },
+                            onExit: (_) {
+                              setState(() {});
+                            },
+                            child: Stack(
+                              children: [
+                                Container(
+                                  padding:
+                                      const EdgeInsets.fromLTRB(0, 0, 10, 0),
+                                  child: Container(
+                                    width: 150,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(20),
+                                      // image: DecorationImage(
+                                      //   image: FileImage(
+                                      //     File(entryData['imagePath']!),
+                                      //   ),
+                                      //   fit: BoxFit.cover,
+                                      //   opacity: 0.5,
+                                      //   colorFilter: ColorFilter.mode(
+                                      //     Colors.black.withOpacity(0.3),
+                                      //     BlendMode.darken,
+                                      //   ),
+                                      // ),
+                                    ),
+                                    child: Column(
+                                      children: [
+                                        SizedBox(
+                                            height:
+                                                getProportionateScreenHeight(
+                                                    25)),
+                                        Text(
+                                          entryData['title']!.length > 7
+                                              ? '${entryData['title']!.substring(0, 7)}...'
+                                              : entryData['title']!,
+                                          style: const TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.white,
+                                            fontSize: 20,
+                                          ),
+                                        ),
+                                        Text(
+                                          entryData['content']!.length > 10
+                                              ? '${entryData['content']!.substring(0, 10)}...'
+                                              : entryData['content']!,
+                                          style: const TextStyle(
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                        const SizedBox(height: 5),
+                                        if (entryData.containsKey('icon'))
+                                          Icon(
+                                              IconData(
+                                                int.parse(entryData['icon']!),
+                                                fontFamily: 'MaterialIcons',
+                                              ),
+                                              color: Color(int.parse(
+                                                  entryData['iconColor']!)),
+                                              size: 50),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                                Positioned(
+                                  right: 0,
+                                  top: 0,
+                                  child: IconButton(
+                                    icon: Icon(
+                                      Icons.delete,
+                                      color: Colors.grey.withOpacity(0.5),
+                                    ),
+                                    onPressed: () => _removeEntry(index),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          );
+                        }),
+                      ],
                     ),
                   ),
-                  locale: 'ko_KR',
-                  firstDay: _firstDay,
-                  lastDay: _lastDay,
-                  focusedDay: _focusedDay,
-                  calendarFormat: CalendarFormat.week,
-                  selectedDayPredicate: (day) {
-                    return isSameDay(_selectedDay, day);
-                  },
-                  onDaySelected: _onDaySelected,
-                  onPageChanged: (focusedDay) {
-                    setState(() {
-                      _focusedDay = focusedDay;
-                      _currentMonth = DateFormat.MMMM()
-                          .format(_focusedDay); // 페이지 변경 시 달 업데이트
-                    });
-                  },
-                ),
-                Container(
-                  width: 250,
-                  height: 250,
-                  alignment: Alignment.center,
-                  decoration: const BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: Color.fromARGB(255, 241, 140, 189),
-                  ),
-                  child: Text(
-                    _difference != null
-                        ? 'D+${-_difference! + 1}' // _difference 상태 변수를 사용
-                        : 'Loading...',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(fontSize: 40, color: Colors.white),
-                  ),
-                ),
-                SizedBox(height: 30),
-                SizedBox(
-                  height: 160,
-                  child: ListView(
-                    scrollDirection: Axis.horizontal,
-                    children: pages,
-                  ),
-                ),
-              ],
+                  const SizedBox(height: 20),
+                ],
+              ),
             ),
           ),
-        ),
+        ],
       ),
     );
   }
@@ -208,88 +360,40 @@ class diary extends StatelessWidget {
         const SizedBox(
           width: 10,
         ),
-        Container(
-          width: 150,
-          decoration: BoxDecoration(
+        GestureDetector(
+          onTap: () => showDialog<String>(
+            context: context,
+            builder: (BuildContext context) => const Dialog(
+              child: pop_up_window(),
+            ),
+          ),
+          child: Container(
+            width: 150,
+            decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(20),
-              color: Color.fromARGB(255, 245, 200, 218)),
-          child: Column(
-            children: [
-              SizedBox(
-                height: getProportionateScreenHeight(25),
-              ),
-              IconButton(
-                onPressed: () => showDialog<String>(
-                  context: context,
-                  builder: (BuildContext context) => const Dialog(
-                    child: pop_up_window(),
+              color: const Color.fromARGB(255, 253, 179, 208),
+            ),
+            child: Column(
+              children: [
+                SizedBox(
+                  height: getProportionateScreenHeight(25),
+                ),
+                const Icon(Icons.add),
+                SizedBox(
+                  height: getProportionateScreenHeight(10),
+                ),
+                const Text(
+                  '추억 저장하러 가기!',
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black,
                   ),
                 ),
-                icon: const Icon(Icons.add),
-              ),
-              SizedBox(
-                height: getProportionateScreenHeight(10),
-              ),
-              const Text(
-                '추억 저장하러 가기!',
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black,
-                ),
-              ),
-            ],
-          ),
-        ),
-        const SizedBox(width: 10)
-      ],
-    );
-  }
-}
-
-class test extends StatelessWidget {
-  const test({
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: [
-        const SizedBox(
-          width: 10,
-        ),
-        Container(
-          padding: const EdgeInsets.all(5),
-          width: 150,
-          decoration: BoxDecoration(
-            image: const DecorationImage(
-              opacity: 0.4,
-              image: AssetImage('assets/images/fall.png'),
-              fit: BoxFit.cover,
+              ],
             ),
-            borderRadius: BorderRadius.circular(20),
-            // color: Colors.lightBlue,
-          ),
-          child: Column(
-            children: [
-              SizedBox(
-                height: getProportionateScreenHeight(25),
-              ),
-              const Text(
-                '행복한 하루!',
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black,
-                ),
-              ),
-              SizedBox(
-                height: getProportionateScreenHeight(10),
-              ),
-              const Text('오늘은 비가 많이 와서 기분이 똥같지만 긍정적으로 생각! 행복한 하루. 끝!'),
-            ],
           ),
         ),
-        const SizedBox(width: 10)
+        const SizedBox(width: 10),
       ],
     );
   }
