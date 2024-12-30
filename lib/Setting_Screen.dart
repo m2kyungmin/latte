@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:ionicons/ionicons.dart';
+import 'package:latte/size_config.dart';
 import 'package:provider/provider.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -61,8 +62,8 @@ class _AccountScreenState extends State<AccountScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const SizedBox(
-                  height: 20,
+                SizedBox(
+                  height: getProportionateScreenHeight(20),
                 ),
                 SingleChildScrollView(
                   scrollDirection: Axis.horizontal,
@@ -75,8 +76,8 @@ class _AccountScreenState extends State<AccountScreen> {
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    const SizedBox(
-                      width: 225,
+                    SizedBox(
+                      width: getProportionateScreenWidth(225),
                     ),
                     IconButton(
                       onPressed: () {
@@ -91,8 +92,8 @@ class _AccountScreenState extends State<AccountScreen> {
                   ]),
                 ),
 
-                const SizedBox(
-                  height: 40,
+                SizedBox(
+                  height: getProportionateScreenHeight(40),
                 ),
                 const Text(
                   "프로필",
@@ -102,8 +103,8 @@ class _AccountScreenState extends State<AccountScreen> {
                     fontWeight: FontWeight.w500,
                   ),
                 ),
-                const SizedBox(
-                  height: 20,
+                SizedBox(
+                  height: getProportionateScreenHeight(20),
                 ),
                 SizedBox(
                   width: double.infinity,
@@ -113,8 +114,8 @@ class _AccountScreenState extends State<AccountScreen> {
                         radius: 30,
                         backgroundImage: FileImage(File(widget.ImageValue)),
                       ),
-                      const SizedBox(
-                        width: 20,
+                      SizedBox(
+                        width: getProportionateScreenWidth(20),
                       ),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -132,8 +133,8 @@ class _AccountScreenState extends State<AccountScreen> {
                               fontWeight: FontWeight.w500,
                             ),
                           ),
-                          const SizedBox(
-                            height: 10,
+                          SizedBox(
+                            height: getProportionateScreenHeight(10),
                           ),
                         ],
                       ),
@@ -165,8 +166,8 @@ class _AccountScreenState extends State<AccountScreen> {
                     ],
                   ),
                 ),
-                const SizedBox(
-                  height: 40,
+                SizedBox(
+                  height: getProportionateScreenHeight(40),
                 ),
                 const Text(
                   '기본 설정',
@@ -176,8 +177,8 @@ class _AccountScreenState extends State<AccountScreen> {
                     fontWeight: FontWeight.w500,
                   ),
                 ),
-                const SizedBox(
-                  height: 20,
+                SizedBox(
+                  height: getProportionateScreenHeight(20),
                 ),
                 // Container(
                 //   width: double.infinity,
@@ -228,16 +229,16 @@ class _AccountScreenState extends State<AccountScreen> {
                 //     ],
                 //   ),
                 // ),
-                const SizedBox(
-                  height: 20,
+                SizedBox(
+                  height: getProportionateScreenHeight(20),
                 ),
                 SizedBox(
                   width: double.infinity,
                   child: Row(
                     children: [
                       Container(
-                        height: 50,
-                        width: 50,
+                        height: getProportionateScreenHeight(50),
+                        width: getProportionateScreenWidth(50),
                         decoration: BoxDecoration(
                             shape: BoxShape.circle,
                             color: Colors.blue.shade200),
@@ -246,8 +247,8 @@ class _AccountScreenState extends State<AccountScreen> {
                           color: Colors.blue,
                         ),
                       ),
-                      const SizedBox(
-                        width: 20,
+                      SizedBox(
+                        width: getProportionateScreenWidth(20),
                       ),
                       const Text(
                         '알림',
@@ -258,14 +259,14 @@ class _AccountScreenState extends State<AccountScreen> {
                         ),
                       ),
                       const Spacer(),
-                      const SizedBox(
-                        width: 20,
+                      SizedBox(
+                        width: getProportionateScreenWidth(20),
                       ),
                       GestureDetector(
                         onTap: () {},
                         child: SizedBox(
-                          width: 60,
-                          height: 60,
+                          width: getProportionateScreenWidth(60),
+                          height: getProportionateScreenHeight(60),
                           child: Switch(
                               value: isSwitched,
                               onChanged: (value) {
@@ -279,16 +280,16 @@ class _AccountScreenState extends State<AccountScreen> {
                     ],
                   ),
                 ),
-                const SizedBox(
-                  height: 20,
+                SizedBox(
+                  height: getProportionateScreenHeight(20),
                 ),
                 SizedBox(
                   width: double.infinity,
                   child: Row(
                     children: [
                       Container(
-                        height: 50,
-                        width: 50,
+                        height: getProportionateScreenHeight(50),
+                        width: getProportionateScreenWidth(50),
                         decoration: BoxDecoration(
                             shape: BoxShape.circle,
                             color: Colors.orange.shade200),
@@ -297,8 +298,8 @@ class _AccountScreenState extends State<AccountScreen> {
                           color: Colors.orange,
                         ),
                       ),
-                      const SizedBox(
-                        width: 20,
+                      SizedBox(
+                        width: getProportionateScreenWidth(20),
                       ),
                       const Text(
                         '언어',
@@ -314,7 +315,7 @@ class _AccountScreenState extends State<AccountScreen> {
                         icon: const Icon(Icons.arrow_drop_down),
                         style: const TextStyle(color: Colors.grey),
                         underline: Container(
-                          height: 2,
+                          height: getProportionateScreenHeight(2),
                           color: Colors.grey,
                         ),
                         onChanged: (String? newValue) {
@@ -370,8 +371,8 @@ class _AccountScreenState extends State<AccountScreen> {
                           ),
                         ],
                       ),
-                      const SizedBox(
-                        width: 20,
+                      SizedBox(
+                        width: getProportionateScreenWidth(20),
                       ),
                     ],
                   ),
@@ -479,7 +480,7 @@ class _EditAccountScreenState extends State<EditAccountScreen> {
             },
             icon: const Icon(Ionicons.chevron_back_outline),
           ),
-          leadingWidth: 80,
+          leadingWidth: getProportionateScreenWidth(80),
           actions: [
             Padding(
               padding: const EdgeInsets.only(right: 10),
@@ -518,8 +519,8 @@ class _EditAccountScreenState extends State<EditAccountScreen> {
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              const SizedBox(
-                height: 40,
+              SizedBox(
+                height: getProportionateScreenHeight(40),
               ),
               Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -564,8 +565,8 @@ class _EditAccountScreenState extends State<EditAccountScreen> {
                       )),
                 ],
               ),
-              const SizedBox(
-                height: 40,
+              SizedBox(
+                height: getProportionateScreenHeight(40),
               ),
               Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -602,8 +603,8 @@ class _EditAccountScreenState extends State<EditAccountScreen> {
                               size: 18,
                             ),
                           ),
-                          const SizedBox(
-                            width: 20,
+                          SizedBox(
+                            width: getProportionateScreenWidth(20),
                           ),
                           IconButton(
                             onPressed: () {
@@ -629,8 +630,8 @@ class _EditAccountScreenState extends State<EditAccountScreen> {
                       )),
                 ],
               ),
-              const SizedBox(
-                height: 10,
+              SizedBox(
+                height: getProportionateScreenHeight(10),
               ),
               Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -665,8 +666,8 @@ class _EditAccountScreenState extends State<EditAccountScreen> {
                       )),
                 ],
               ),
-              const SizedBox(
-                height: 40,
+              SizedBox(
+                height: getProportionateScreenHeight(40),
               ),
               Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -701,8 +702,8 @@ class _EditAccountScreenState extends State<EditAccountScreen> {
                       )),
                 ],
               ),
-              const SizedBox(
-                height: 40,
+              SizedBox(
+                height: getProportionateScreenHeight(40),
               ),
               Row(
                 crossAxisAlignment: CrossAxisAlignment.start,

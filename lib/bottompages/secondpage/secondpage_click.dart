@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:expand_widget/expand_widget.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:latte/bottompages/secondpage/secondpage.dart';
+import 'package:latte/size_config.dart';
 
 class SecClick extends StatefulWidget {
   const SecClick({super.key});
@@ -27,47 +28,62 @@ class _SecClickState extends State<SecClick> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      theme: ThemeData(
+        fontFamily: 'MangoDdobak',
+        primarySwatch: Colors.blue,
+      ),
+      debugShowCheckedModeBanner: false,
       color: const Color.fromARGB(255, 252, 246, 248),
       home: Scaffold(
         appBar: AppBar(
           backgroundColor: const Color.fromARGB(255, 252, 246, 248),
+          shape: Border(
+            bottom: BorderSide(
+              color: Color.fromARGB(255, 251, 221, 231),
+              width: 1,
+            ),
+          ),
           leading: IconButton(
             icon: const Icon(Icons.arrow_back),
             onPressed: () {
               Navigator.pop(context);
             },
           ),
-          title: Text('$_month월 $_day일'),
+          title: Text('$_month월 $_day일',
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+              )),
         ),
         body: FutureBuilder(
           future: _fromFirestore(),
           builder: (context, snapshot) => ListView(
-              children: List.generate(
-            snapshot.data?.length ?? 1,
-            (index) {
-              // if (snapshot.connectionState == ConnectionState.waiting) {
-              //   return const Center(child: CircularProgressIndicator());
-              // } else if (snapshot.connectionState == ConnectionState.done) {
-              //   if (snapshot.hasError) {
-              //     return Center(child: Text('Error: ${snapshot.error}'));
-              //   } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-              //     return const Center(child: Text('No data available'));
-              //   } else {
-              //     final users = snapshot.data!;
-              //     return ListView.builder(
-              //       itemCount: users.length,
-              //       itemBuilder: (context, index) {
-              //         final user = users[index];
-              //         return ListTile(
-              //           title: Text('${snapshot.data?['id']}'),
-              //           subtitle: Text(user['rank']),
-              //         );
-              //       },
-              //     );
-              //   }
-              // } else {
-              //   return Center(child: Text('State: ${snapshot.connectionState}'));
-              // }
+              children: List.generate(snapshot.data?.length ?? 1, (index) {
+            // if (snapshot.connectionState == ConnectionState.waiting) {
+            //   return const Center(child: CircularProgressIndicator());
+            // } else if (snapshot.connectionState == ConnectionState.done) {
+            //   if (snapshot.hasError) {
+            //     return Center(child: Text('Error: ${snapshot.error}'));
+            //   } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+            //     return const Center(child: Text('No data available'));
+            //   } else {
+            //     final users = snapshot.data!;
+            //     return ListView.builder(
+            //       itemCount: users.length,
+            //       itemBuilder: (context, index) {
+            //         final user = users[index];
+            //         return ListTile(
+            //           title: Text('${snapshot.data?['id']}'),
+            //           subtitle: Text(user['rank']),
+            //         );
+            //       },
+            //     );
+            //   }
+            // } else {
+            //   return Center(child: Text('State: ${snapshot.connectionState}'));
+            // }
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Center(child: CircularProgressIndicator());
+            } else {
               CameraPosition position = CameraPosition(
                   target: LatLng(
                       double.parse(snapshot.data?[index].coordinate_3d ?? '0'),
@@ -75,78 +91,157 @@ class _SecClickState extends State<SecClick> {
                   zoom: 15);
               return Theme(
                 data: ThemeData().copyWith(dividerColor: Colors.transparent),
-                child: Column(
-                  children: [
-                    ExpansionTile(
-                      title: Text(
-                          '${snapshot.data?[index].s_time} ~ ${snapshot.data?[index].e_time}'),
-                      trailing: Text(
-                        snapshot.data?[index].title ?? "111",
-                        style: const TextStyle(fontSize: 14),
+                child: Container(
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(10),
                       ),
-                      children: <Widget>[
-                        Column(
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      // border:
+                      //     Border.all(color: Color.fromARGB(255, 237, 53, 108))),
+                      color: Color.fromARGB(255, 250, 230, 237)),
+                  margin: EdgeInsets.fromLTRB(12, 10, 12, 10),
+                  child: Container(
+                    child: Column(
+                      children: [
+                        ExpansionTile(
+                          title: Text(
+                            '${snapshot.data?[index].s_time} ~ ${snapshot.data?[index].e_time}',
+                            style: const TextStyle(
+                                fontSize: 19,
+                                fontFamily: 'MangoDdobak',
+                                color: Colors.black),
+                          ),
+                          trailing: Text(
+                            snapshot.data?[index].title ?? "111",
+                            style: const TextStyle(
+                                fontSize: 19,
+                                fontFamily: 'MangoDdobak',
+                                color: Colors.black),
+                          ),
+                          children: <Widget>[
+                            Column(
                               children: [
-                                const Column(
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
                                   children: [
-                                    Text('기간'),
-                                    SizedBox(height: 10),
-                                    Text('시간'),
-                                    SizedBox(height: 10),
-                                    Text('장소'),
-                                    SizedBox(height: 10),
-                                    Text('요금'),
+                                    Container(
+                                      child: const Column(
+                                        children: [
+                                          Text(
+                                            '기간',
+                                          ),
+                                          SizedBox(height: 10),
+                                          Text(
+                                            '시간',
+                                          ),
+                                          SizedBox(height: 10),
+                                          Text(
+                                            '장소',
+                                          ),
+                                          SizedBox(height: 10),
+                                          Text(
+                                            '요금',
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    Column(
+                                      children: [
+                                        SizedBox(
+                                            height:
+                                                getProportionateScreenHeight(
+                                                    10)),
+                                        Text(
+                                            '${snapshot.data?[index].s_date} ~ ${snapshot.data?[index].e_date}'),
+                                        SizedBox(
+                                            height:
+                                                getProportionateScreenHeight(
+                                                    10)),
+                                        Text(
+                                            '${snapshot.data?[index].s_time} ~ ${snapshot.data?[index].e_time}'),
+                                        SizedBox(
+                                            height:
+                                                getProportionateScreenHeight(
+                                                    10)),
+                                        Text(
+                                            '${snapshot.data?[index].location}'),
+                                        SizedBox(
+                                            height:
+                                                getProportionateScreenHeight(
+                                                    10)),
+                                        Text('${snapshot.data?[index].fee}'),
+                                        SizedBox(
+                                            height:
+                                                getProportionateScreenHeight(
+                                                    10)),
+                                      ],
+                                    ),
+                                    Container(
+                                      child: ClipRRect(
+                                        borderRadius:
+                                            BorderRadius.circular(8.0),
+                                        child: Image.network(
+                                          '${snapshot.data?[index].image}',
+                                          // width: 100,
+                                          // height: 100,
+                                          scale: 2.7,
+                                          fit: BoxFit.cover,
+                                        ),
+                                      ),
+                                    )
                                   ],
                                 ),
-                                Column(
-                                  children: [
-                                    const SizedBox(height: 10),
-                                    Text(
-                                        '${snapshot.data?[index].s_date} ~ ${snapshot.data?[index].e_date}'),
-                                    const SizedBox(height: 10),
-                                    Text(
-                                        '${snapshot.data?[index].s_time} ~ ${snapshot.data?[index].e_time}'),
-                                    const SizedBox(height: 10),
-                                    Text('${snapshot.data?[index].location}'),
-                                    const SizedBox(height: 10),
-                                    Text('${snapshot.data?[index].fee}'),
-                                    const SizedBox(height: 10),
-                                  ],
-                                ),
+                                const SizedBox(height: 20),
                                 Container(
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(10),
+                                      border: Border.all(
+                                          color: Color.fromARGB(
+                                              255, 247, 207, 223))),
+                                  padding: EdgeInsets.all(1),
                                   child: ClipRRect(
-                                    borderRadius: BorderRadius.circular(8.0),
-                                    child: Image.network(
-                                      '${snapshot.data?[index].image}',
-                                      // width: 100,
-                                      // height: 100,
-                                      scale: 3,
-                                      fit: BoxFit.cover,
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(10),
+                                      ),
+                                      height: getProportionateScreenHeight(310),
+                                      width: getProportionateScreenWidth(310),
+                                      child: GoogleMap(
+                                        initialCameraPosition: position,
+                                        mapType: MapType.normal,
+                                        myLocationButtonEnabled: false,
+                                        markers: {
+                                          Marker(
+                                            markerId: const MarkerId('1'),
+                                            position: LatLng(
+                                                double.parse(snapshot
+                                                        .data?[index]
+                                                        .coordinate_3d ??
+                                                    '0'),
+                                                double.parse(snapshot
+                                                        .data?[index]
+                                                        .coordinate_4d ??
+                                                    '0')),
+                                          ),
+                                        },
+                                      ),
                                     ),
                                   ),
-                                )
+                                ),
+                                SizedBox(
+                                    height: getProportionateScreenHeight(10))
                               ],
                             ),
-                            const SizedBox(height: 10),
-                            SizedBox(
-                              height: 300,
-                              width: 300,
-                              child: GoogleMap(
-                                initialCameraPosition: position,
-                              ),
-                            )
                           ],
                         ),
                       ],
                     ),
-                  ],
+                  ),
                 ),
               );
-            },
-          )),
+            }
+          })),
         ),
       ),
     );

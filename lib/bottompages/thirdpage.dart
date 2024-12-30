@@ -1,7 +1,8 @@
+import 'dart:ui';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/painting.dart';
 import 'package:ionicons/ionicons.dart';
-import 'package:provider/provider.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:async';
@@ -14,220 +15,100 @@ class ThirdPage extends StatefulWidget {
     required this.NameValue,
     required this.AgeValue,
     required this.EmailValue,
-    required this.ImageValue,
+    // required this.ImageValue
   });
 
-  final String? NameValue;
-  final String? AgeValue;
-  final String? EmailValue;
-  final String? ImageValue;
+  final String NameValue;
+  final String AgeValue;
+  final String EmailValue;
+  // final String ImageValue;
 
   @override
   State<ThirdPage> createState() => _ThirdPageState();
 }
 
 class _ThirdPageState extends State<ThirdPage> {
-  late SharedPreferences prefs;
   bool isSwitched = false;
+  bool darkSwitch = false;
   String dropdownValue = '한국어';
 
-  // 알림, 언어변경 버튼
-  _save() async {
-    await prefs.setBool('switch', isSwitched);
-    await prefs.setString('dropdown', dropdownValue);
-  }
-
-  getInitData() async {
-    prefs = await SharedPreferences.getInstance();
-    isSwitched = prefs.getBool('switch') ?? false;
-    dropdownValue = prefs.getString('dropdown') ?? '';
-    setState(() {
-      dropdownValue = '한국어';
-    });
+  Future<void> _initializePreferences() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
   }
 
   @override
   void initState() {
     super.initState();
     getInitData();
+    _initializePreferences();
+  }
+
+  // 알림, 언어변경 버튼
+  _save() async {
+    // await prefs.setBool('switch', isSwitched);
+    // await prefs.setBool('dark', darkSwitch);
+    // await prefs.setString('dropdown', dropdownValue);
+  }
+
+  getInitData() async {
+    // prefs = await SharedPreferences.getInstance();
+    // isSwitched = prefs.getBool('switch') ?? false;
+    // darkSwitch = prefs.getBool('dark') ?? false;
+    // dropdownValue = prefs.getString('dropdown') ?? '';
+    setState(() {
+      dropdownValue = '한국어';
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: const Color.fromARGB(225, 246, 242, 243),
+        backgroundColor: const Color.fromARGB(255, 246, 242, 243),
         body: SingleChildScrollView(
           child: Padding(
-            padding: const EdgeInsets.all(30),
+            padding: const EdgeInsets.all(15),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const SizedBox(
                   height: 20,
                 ),
-                SingleChildScrollView(
+                const SingleChildScrollView(
                   scrollDirection: Axis.horizontal,
                   child: Row(children: [
-                    const Text(
-                      '설정',
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 36,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    const SizedBox(
-                      width: 225,
-                    ),
-                    IconButton(
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const EditAccountScreen()),
-                        );
-                      },
-                      icon: const Icon(Ionicons.settings),
-                    ),
+                    // Text(
+                    //   '설정',
+                    //   style: TextStyle(
+                    //     color: Colors.black,
+                    //     fontSize: 25,
+                    //     fontWeight: FontWeight.bold,
+                    //     fontFamily: "AppDesign",
+                    //   ),
+                    // ),
+                    // const SizedBox(
+                    //   width: 225,
+                    // ),
+                    // IconButton(
+                    //   onPressed: () {
+                    //     Navigator.push(
+                    //       context,
+                    //       MaterialPageRoute(builder: (context) => EditThirdPage()),
+                    //     );
+                    //   },
+                    //   icon: Icon(Ionicons.settings),
+                    // ),
                   ]),
                 ),
-
                 const SizedBox(
                   height: 40,
                 ),
-                const Text(
-                  "프로필",
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 24,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                SizedBox(
-                  width: double.infinity,
-                  child: Row(
-                    children: [
-                      CircleAvatar(
-                        radius: 30,
-                        backgroundImage:
-                            FileImage(File(widget.ImageValue ?? '')),
-                      ),
-                      const SizedBox(
-                        width: 20,
-                      ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            widget.NameValue ?? '',
-                            style: const TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                          Text(
-                            widget.AgeValue ?? '',
-                            style: const TextStyle(
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                          const SizedBox(
-                            height: 10,
-                          ),
-                        ],
-                      ),
-                      const Spacer(),
-                      Text(
-                        widget.EmailValue ?? '',
-                        style: const TextStyle(
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-
-                      // GestureDetector(
-                      //     onTap: () {
-                      //       Navigator.pop(
-                      //         context,
-                      //         MaterialPageRoute(
-                      //             builder: (context) => EditAccountScreen()),
-                      //       );
-                      //     },
-                      //     child: Container(
-                      //       width: 60,
-                      //       height: 60,
-                      //       decoration: BoxDecoration(
-                      //         color: Colors.grey.shade200,
-                      //         borderRadius: BorderRadius.circular(15),
-                      //       ),
-                      //       child: const Icon(Ionicons.chevron_forward_outline),
-                      //     )),
-                    ],
-                  ),
-                ),
-                const SizedBox(
-                  height: 40,
-                ),
-                const Text(
-                  '기본 설정',
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 24,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                // Container(
-                //   width: double.infinity,
-                //   child: Row(
-                //     children: [
-                //       Container(
-                //         height: 50,
-                //         width: 50,
-                //         decoration: BoxDecoration(
-                //             shape: BoxShape.circle, color: Colors.red.shade200),
-                //         child: Icon(
-                //           Icons.dark_mode,
-                //           color: Colors.red,
-                //         ),
-                //       ),
-                //       const SizedBox(
-                //         width: 20,
-                //       ),
-                //       Text(
-                //         '다크 모드',
-                //         style: TextStyle(
-                //           color: Colors.black,
-                //           fontSize: 16.0,
-                //           fontWeight: FontWeight.w500,
-                //         ),
-                //       ),
-                //       const Spacer(),
-                //       const SizedBox(
-                //         width: 20,
-                //       ),
-                //       Consumer<UiProvider>(
-                //         builder: (context, UiProvider notifier, child) {
-                //           return GestureDetector(
-                //             onTap: () {},
-                //             child: Container(
-                //               width: 60,
-                //               height: 60,
-                //               child: Switch(
-                //                 value: notifier.isDark,
-                //                 onChanged: (value) {
-                //                   notifier.changeTheme();
-                //                 },
-                //               ),
-                //             ),
-                //           );
-                //         },
-                //       ),
-                //     ],
+                // Text(
+                //   "프로필",
+                //   style: TextStyle(
+                //     color: Colors.black,
+                //     fontSize: 20,
+                //     fontWeight: FontWeight.w500,
+                //     fontFamily: "AppDesign",
                 //   ),
                 // ),
                 const SizedBox(
@@ -237,15 +118,177 @@ class _ThirdPageState extends State<ThirdPage> {
                   width: double.infinity,
                   child: Row(
                     children: [
-                      Container(
+                      IconButton(
+                        icon: const CircleAvatar(
+                          radius: 30,
+                          // backgroundImage: FileImage(File(widget.ImageValue)),
+                        ),
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const EditThirdPage()),
+                          );
+                        },
+                      ),
+                      const SizedBox(
+                        width: 20,
+                      ),
+                      FutureBuilder(
+                        future: SharedPreferences.getInstance(),
+                        builder: (BuildContext context,
+                            AsyncSnapshot<SharedPreferences> snapshot) {
+                          if (snapshot.connectionState ==
+                              ConnectionState.waiting) {
+                            return const Center(
+                                child: CircularProgressIndicator());
+                          } else if (snapshot.hasError) {
+                            return Center(
+                                child: Text('Error: ${snapshot.error}'));
+                          } else if (snapshot.hasData) {
+                            final prefs = snapshot.data!;
+                            final text = prefs.getString('currenttext') ??
+                                'none'; // SharedPreferences에서 'text' 값을 가져옴
+                            return Center(
+                              child: Text(
+                                text,
+                                style: const TextStyle(fontSize: 24),
+                              ),
+                            );
+                          } else {
+                            return const Center(child: Text('No data found'));
+                          }
+                          // Column(
+                          //   crossAxisAlignment: CrossAxisAlignment.start,
+                          //   children: [
+                          //     Text(
+                          //       snapshot.getString('text') ?? '',
+                          //       style: const TextStyle(
+                          //         fontFamily: "AppDesign",
+                          //         fontSize: 18,
+                          //         fontWeight: FontWeight.w500,
+                          //       ),
+                          //     ),
+                          //     Text(
+                          //       widget.AgeValue,
+                          //       style: const TextStyle(
+                          //         fontFamily: "AppDesign",
+                          //         fontWeight: FontWeight.w500,
+                          //       ),
+                          //     ),
+                          //     const SizedBox(
+                          //       height: 10,
+                          //     ),
+                          //   ],
+                          // );
+                        },
+                      ),
+                      const Spacer(),
+                      FutureBuilder(
+                        future: SharedPreferences.getInstance(),
+                        builder: (BuildContext context,
+                            AsyncSnapshot<SharedPreferences> snapshot) {
+                          if (snapshot.connectionState ==
+                              ConnectionState.waiting) {
+                            return const Center(
+                                child: CircularProgressIndicator());
+                          } else if (snapshot.hasError) {
+                            return Center(
+                                child: Text('Error: ${snapshot.error}'));
+                          } else if (snapshot.hasData) {
+                            final prefs = snapshot.data!;
+                            final text = prefs.getString('currentemail') ??
+                                'none'; // SharedPreferences에서 'text' 값을 가져옴
+                            return Center(
+                              child: Text(
+                                text,
+                                style: const TextStyle(fontSize: 24),
+                              ),
+                            );
+                          } else {
+                            return const Center(child: Text('No data found'));
+                          }
+                        },
+                      )
+                    ],
+                  ),
+                ),
+                const SizedBox(
+                  height: 40,
+                ),
+                // Text(
+                //   '기본 설정',
+                //   style: TextStyle(
+                //     color: Colors.black,
+                //     fontSize: 20,
+                //     fontWeight: FontWeight.w500,
+                //     fontFamily: "AppDesign",
+                //   ),
+                // ),
+                const SizedBox(
+                  height: 20,
+                ),
+                SizedBox(
+                  width: double.infinity,
+                  child: Row(
+                    children: [
+                      SizedBox(
                         height: 50,
                         width: 50,
-                        decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: Colors.blue.shade200),
-                        child: const Icon(
+                        child: Icon(
+                          Icons.dark_mode,
+                          color: Colors.purple.shade100,
+                          size: 40,
+                        ),
+                      ),
+                      const SizedBox(
+                        width: 20,
+                      ),
+                      const Text(
+                        '다크 모드',
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 15.0,
+                          fontWeight: FontWeight.w500,
+                          fontFamily: "MangoDDobak",
+                        ),
+                      ),
+                      const Spacer(),
+                      const SizedBox(
+                        width: 20,
+                      ),
+                      GestureDetector(
+                        onTap: () {},
+                        child: SizedBox(
+                          width: 60,
+                          height: 60,
+                          child: Switch(
+                              value: darkSwitch,
+                              onChanged: (value) {
+                                setState(() {
+                                  darkSwitch = value;
+                                  _save();
+                                });
+                              }),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                SizedBox(
+                  width: double.infinity,
+                  child: Row(
+                    children: [
+                      SizedBox(
+                        height: 50,
+                        width: 50,
+                        child: Icon(
                           Ionicons.notifications,
-                          color: Colors.blue,
+                          color: Colors.pink.shade100,
+                          size: 40,
                         ),
                       ),
                       const SizedBox(
@@ -255,8 +298,9 @@ class _ThirdPageState extends State<ThirdPage> {
                         '알림',
                         style: TextStyle(
                           color: Colors.black,
-                          fontSize: 16.0,
+                          fontSize: 15.0,
                           fontWeight: FontWeight.w500,
+                          fontFamily: "MangoDDobak",
                         ),
                       ),
                       const Spacer(),
@@ -288,15 +332,13 @@ class _ThirdPageState extends State<ThirdPage> {
                   width: double.infinity,
                   child: Row(
                     children: [
-                      Container(
+                      SizedBox(
                         height: 50,
                         width: 50,
-                        decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: Colors.orange.shade200),
-                        child: const Icon(
+                        child: Icon(
                           Ionicons.earth,
-                          color: Colors.orange,
+                          color: Colors.pink.shade200,
+                          size: 40,
                         ),
                       ),
                       const SizedBox(
@@ -306,8 +348,9 @@ class _ThirdPageState extends State<ThirdPage> {
                         '언어',
                         style: TextStyle(
                           color: Colors.black,
-                          fontSize: 16.0,
+                          fontSize: 15.0,
                           fontWeight: FontWeight.w500,
+                          fontFamily: "MangoDDobak",
                         ),
                       ),
                       const Spacer(),
@@ -332,8 +375,9 @@ class _ThirdPageState extends State<ThirdPage> {
                               '한국어',
                               style: TextStyle(
                                 color: Colors.black,
-                                fontSize: 16.0,
+                                fontSize: 15.0,
                                 fontWeight: FontWeight.w500,
+                                fontFamily: "MangoDDobak",
                               ),
                             ),
                           ),
@@ -343,8 +387,9 @@ class _ThirdPageState extends State<ThirdPage> {
                               'English',
                               style: TextStyle(
                                 color: Colors.black,
-                                fontSize: 16.0,
+                                fontSize: 15.0,
                                 fontWeight: FontWeight.w500,
+                                fontFamily: "MangoDDobak",
                               ),
                             ),
                           ),
@@ -354,8 +399,9 @@ class _ThirdPageState extends State<ThirdPage> {
                               '中國語',
                               style: TextStyle(
                                 color: Colors.black,
-                                fontSize: 16.0,
+                                fontSize: 15.0,
                                 fontWeight: FontWeight.w500,
+                                fontFamily: "MangoDDobak",
                               ),
                             ),
                           ),
@@ -365,8 +411,9 @@ class _ThirdPageState extends State<ThirdPage> {
                               '日本語',
                               style: TextStyle(
                                 color: Colors.black,
-                                fontSize: 16.0,
+                                fontSize: 15.0,
                                 fontWeight: FontWeight.w500,
+                                fontFamily: "MangoDDobak",
                               ),
                             ),
                           ),
@@ -385,16 +432,16 @@ class _ThirdPageState extends State<ThirdPage> {
   }
 }
 
-class EditAccountScreen extends StatefulWidget {
+class EditThirdPage extends StatefulWidget {
   // 프로필 창 클래스
-  const EditAccountScreen({super.key});
+  const EditThirdPage({super.key});
 
   @override
-  State<EditAccountScreen> createState() => _EditAccountScreenState();
+  State<EditThirdPage> createState() => _EditThirdPageState();
 }
 
-class _EditAccountScreenState extends State<EditAccountScreen> {
-  String _imagepath = '';
+class _EditThirdPageState extends State<EditThirdPage> {
+  // String _imagepath = '';
   XFile? _image;
 
   String gender = 'man';
@@ -420,12 +467,12 @@ class _EditAccountScreenState extends State<EditAccountScreen> {
 
   _save() {
     _prefs.setString('genderValue', gender);
+    text = text_Controller.text;
+    age = age_Controller.text;
+    email = email_Controller.text;
     setState(() {
-      text = text_Controller.text;
       _prefs.setString('currenttext', text);
-      age = age_Controller.text;
       _prefs.setString('currentage', age);
-      email = email_Controller.text;
       _prefs.setString('currentemail', email);
     });
   }
@@ -456,110 +503,176 @@ class _EditAccountScreenState extends State<EditAccountScreen> {
   void LoadImage() async {
     SharedPreferences saveimage = await SharedPreferences.getInstance();
     setState(() {
-      _imagepath = saveimage.getString('imagepath') ?? '';
+      // _imagepath = saveimage.getString('imagepath') ?? '';
     });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: const Color.fromARGB(225, 246, 242, 243),
-        appBar: AppBar(
-          backgroundColor: Colors.transparent,
-          elevation: 0.0,
-          leading: IconButton(
-            onPressed: () async {
-              await Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => ThirdPage(
-                            NameValue: text,
-                            AgeValue: age,
-                            EmailValue: email,
-                            ImageValue: _imagepath,
-                          )));
-            },
-            icon: const Icon(Ionicons.chevron_back_outline),
-          ),
-          leadingWidth: 80,
-          actions: [
-            Padding(
-              padding: const EdgeInsets.only(right: 10),
-              child: IconButton(
-                onPressed: () {
-                  _save();
-                  Saveimage(_image!.path);
-                  Navigator.pop(context);
-                },
-                style: IconButton.styleFrom(
-                  backgroundColor: const Color.fromARGB(255, 245, 200, 218),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(15),
-                  ),
-                  fixedSize: const Size(60, 50),
-                  elevation: 3,
-                ),
-                icon: const Icon(
-                  Ionicons.checkmark,
-                  color: Colors.white,
-                ),
-              ),
-            ),
-          ],
-        ),
+        backgroundColor: const Color.fromARGB(255, 246, 242, 243),
+        //elevation: 0.0,
+        // leading: IconButton(
+        //
+        //   onPressed: () async {
+        //     await Navigator.push(
+        //         context,
+        //         MaterialPageRoute(
+        //             builder: (context) => ThirdPage(
+        //                   NameValue: text,
+        //                   AgeValue: age,
+        //                   EmailValue: email,
+        //                   ImageValue: _imagepath,
+        //                 )));
+        //   },
+        //   icon: Icon(Ionicons.chevron_back_outline),
+        // ),
+        //
+
+        // actions: [
+        //   Padding(
+        //     padding: const EdgeInsets.only(right: 10),
+        //     child: IconButton(
+        //       onPressed: () async {
+        //         _save();
+        //         Saveimage(_image!.path);
+        //
+        //         await Navigator.push(
+        //             context,
+        //             MaterialPageRoute(
+        //                 builder: (context) => ThirdPage(
+        //                   NameValue: text,
+        //                   AgeValue: age,
+        //                   EmailValue: email,
+        //                   ImageValue: _imagepath,
+        //                 )));
+        //       },
+        //       style: IconButton.styleFrom(
+        //         backgroundColor: Color(0xFFF05B88),
+        //         shape: RoundedRectangleBorder(
+        //           borderRadius: BorderRadius.circular(15),
+        //         ),
+        //         fixedSize: Size(60, 50),
+        //         elevation: 3,
+        //       ),
+        //       icon: Icon(
+        //         Ionicons.checkmark,
+        //         color: Color.fromARGB(255, 239, 239, 239),
+        //       ),
+        //     ),
+        //   ),
+        // ],
+
         body: SingleChildScrollView(
             child: Padding(
           padding: const EdgeInsets.all(10),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text(
-                '프로필',
-                style: TextStyle(
-                  color: Colors.black,
-                  fontSize: 36,
-                  fontWeight: FontWeight.bold,
-                ),
+              const SizedBox(
+                height: 20,
               ),
+              Row(children: [
+                const SizedBox(
+                  width: 280,
+                ),
+                Container(
+                  margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
+                  child: IconButton(
+                    onPressed: () async {
+                      _save();
+                      Navigator.pop(context);
+                      //Saveimage(_image!.path);
+                      // NameValue = text;
+                      // AgeValue:
+                      // age;
+                      // EmailValue:
+                      // email;
+                      // ImageValue: _imagepath,
+
+                      // _save();
+                      // Saveimage(_image!.path);
+                      // print("saveimage");
+                      //  await Navigator.push(
+                      //    context,
+                      //      MaterialPageRoute(
+                      //         builder: (BuildContext context) => ThirdPage(
+                      //           NameValue: text,
+                      //           AgeValue: age,
+                      //           EmailValue: email,
+                      //           ImageValue: _imagepath,
+                      //         )
+                      //     )
+                      // );
+                      //  print("push");
+                      // Navigator.of(context).pop();
+                    },
+                    style: IconButton.styleFrom(
+                      backgroundColor: const Color(0xFFF05B88),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(15),
+                      ),
+                      fixedSize: const Size(60, 50),
+                      elevation: 3,
+                    ),
+                    icon: const Icon(
+                      Ionicons.checkmark,
+                      color: Color.fromARGB(255, 239, 239, 239),
+                    ),
+                  ),
+                ),
+              ]),
+
+              // const Text(
+              //   '프로필',
+              //   style: TextStyle(
+              //     color: Colors.black,
+              //     fontSize: 36,
+              //     fontWeight: FontWeight.bold,
+              //     fontFamily: "AppDesign",
+              //   ),
+              // ),
               const SizedBox(
                 height: 40,
               ),
               Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Expanded(
-                    child: Text(
-                      '사진',
-                      style: TextStyle(
-                        fontSize: 16.0,
-                        color: Colors.black,
-                      ),
-                    ),
-                  ),
+                  // const Expanded(
+                  //   child: Text(
+                  //     '사진',
+                  //     style: TextStyle(
+                  //       fontSize: 16.0,
+                  //       color: Colors.black,
+                  //       fontFamily: "AppDesign",
+                  //     ),
+                  //   ),
+                  // ),
                   Expanded(
                       flex: 10,
                       child: Column(
                         children: [
                           _image == null
-                              ? CircleAvatar(
-                                  backgroundImage: FileImage(File(_imagepath)),
+                              ? const CircleAvatar(
+                                  // backgroundImage: FileImage(File(_imagepath)),
                                   radius: 50,
                                 )
-                              : CircleAvatar(
-                                  backgroundImage:
-                                      FileImage(File(_image!.path)),
+                              : const CircleAvatar(
+                                  // backgroundImage:
+                                  //     FileImage(File(_image!.path)),
                                   radius: 50,
                                 ),
                           TextButton(
                             onPressed: getGalleryImage,
                             style: TextButton.styleFrom(
-                              foregroundColor: Colors.lightBlueAccent,
+                              foregroundColor: Colors.black,
                             ),
                             child: const Text(
                               '사진 변경',
                               style: TextStyle(
-                                fontSize: 16.0,
+                                fontSize: 15.0,
                                 fontWeight: FontWeight.w500,
+                                fontFamily: "MangoDDobak",
                               ),
                             ),
                           ),
@@ -577,8 +690,9 @@ class _EditAccountScreenState extends State<EditAccountScreen> {
                     child: Text(
                       '성별',
                       style: TextStyle(
-                        fontSize: 16.0,
+                        fontSize: 15.0,
                         color: Colors.black,
+                        fontFamily: "MangoDDobak",
                       ),
                     ),
                   ),
@@ -594,7 +708,7 @@ class _EditAccountScreenState extends State<EditAccountScreen> {
                             },
                             style: IconButton.styleFrom(
                               backgroundColor: gender == 'man'
-                                  ? Colors.deepPurple
+                                  ? const Color.fromARGB(255, 242, 154, 147)
                                   : Colors.grey.shade200,
                               fixedSize: const Size(50, 50),
                             ),
@@ -602,7 +716,7 @@ class _EditAccountScreenState extends State<EditAccountScreen> {
                               Ionicons.male,
                               color:
                                   gender == 'man' ? Colors.white : Colors.black,
-                              size: 18,
+                              size: 20,
                             ),
                           ),
                           const SizedBox(
@@ -616,7 +730,7 @@ class _EditAccountScreenState extends State<EditAccountScreen> {
                             },
                             style: IconButton.styleFrom(
                               backgroundColor: gender == 'woman'
-                                  ? Colors.deepPurple
+                                  ? const Color.fromARGB(255, 242, 154, 147)
                                   : Colors.grey.shade200,
                               fixedSize: const Size(50, 50),
                             ),
@@ -625,7 +739,7 @@ class _EditAccountScreenState extends State<EditAccountScreen> {
                               color: gender == 'woman'
                                   ? Colors.white
                                   : Colors.black,
-                              size: 18,
+                              size: 20,
                             ),
                           ),
                         ],
@@ -642,8 +756,9 @@ class _EditAccountScreenState extends State<EditAccountScreen> {
                     child: Text(
                       '이름',
                       style: TextStyle(
-                        fontSize: 16.0,
+                        fontSize: 15.0,
                         color: Colors.black,
+                        fontFamily: "MangoDDobak",
                       ),
                     ),
                   ),
@@ -653,8 +768,19 @@ class _EditAccountScreenState extends State<EditAccountScreen> {
                         children: [
                           TextField(
                             controller: text_Controller,
+                            style: const TextStyle(
+                              fontFamily: "MangoDDobak",
+                            ),
                             decoration: InputDecoration(
+                              focusedBorder: const OutlineInputBorder(
+                                borderSide: BorderSide(
+                                    width: 1, color: Color(0xFFF48FB1)),
+                              ),
                               labelText: '이름을 입력하세요',
+                              labelStyle: const TextStyle(
+                                color: Colors.black,
+                                fontFamily: "MangoDDobak",
+                              ),
                               border: const OutlineInputBorder(),
                               suffixIcon: IconButton(
                                 onPressed: () {
@@ -678,8 +804,9 @@ class _EditAccountScreenState extends State<EditAccountScreen> {
                     child: Text(
                       '나이',
                       style: TextStyle(
-                        fontSize: 16.0,
+                        fontSize: 15.0,
                         color: Colors.black,
+                        fontFamily: "MangoDDobak",
                       ),
                     ),
                   ),
@@ -689,8 +816,19 @@ class _EditAccountScreenState extends State<EditAccountScreen> {
                         children: [
                           TextField(
                             controller: age_Controller,
+                            style: const TextStyle(
+                              fontFamily: "MangoDDobak",
+                            ),
                             decoration: InputDecoration(
+                              focusedBorder: const OutlineInputBorder(
+                                borderSide: BorderSide(
+                                    width: 1, color: Color(0xFFF48FB1)),
+                              ),
                               labelText: '나이를 입력하세요',
+                              labelStyle: const TextStyle(
+                                color: Colors.black,
+                                fontFamily: "MangoDDobak",
+                              ),
                               border: const OutlineInputBorder(),
                               suffixIcon: IconButton(
                                 onPressed: () {
@@ -714,8 +852,9 @@ class _EditAccountScreenState extends State<EditAccountScreen> {
                     child: Text(
                       '이메일',
                       style: TextStyle(
-                        fontSize: 16.0,
+                        fontSize: 15.0,
                         color: Colors.black,
+                        fontFamily: "MangoDDobak",
                       ),
                     ),
                   ),
@@ -725,8 +864,19 @@ class _EditAccountScreenState extends State<EditAccountScreen> {
                         children: [
                           TextField(
                             controller: email_Controller,
+                            style: const TextStyle(
+                              fontFamily: "MangoDDobak",
+                            ),
                             decoration: InputDecoration(
+                              focusedBorder: const OutlineInputBorder(
+                                borderSide: BorderSide(
+                                    width: 1, color: Color(0xFFF48FB1)),
+                              ),
                               labelText: '이메일을 입력하세요',
+                              labelStyle: const TextStyle(
+                                color: Colors.black,
+                                fontFamily: "MangoDDobak",
+                              ),
                               border: const OutlineInputBorder(),
                               suffixIcon: IconButton(
                                 onPressed: () {
@@ -751,64 +901,23 @@ void main() {
   runApp(const MyApp());
 }
 
-class UiProvider extends ChangeNotifier {
-  // 다크 모드
-  bool _isDark = false;
-  bool get isDark => _isDark;
-  late SharedPreferences storage;
-
-  final darkTheme = ThemeData(
-    primaryColor: Colors.black12,
-    brightness: Brightness.dark,
-    primaryColorDark: Colors.black12,
-  );
-
-  final lightTheme = ThemeData(
-      primaryColor: Colors.white,
-      brightness: Brightness.light,
-      primaryColorDark: Colors.white);
-
-  changeTheme() {
-    _isDark = !isDark;
-    storage.setBool('isDark', _isDark);
-    notifyListeners();
-  }
-
-  init() async {
-    storage = await SharedPreferences.getInstance();
-    _isDark = storage.getBool('isDark') ?? false;
-    notifyListeners();
-  }
-}
-
 class MyApp extends StatelessWidget {
   // Main 클래스
   const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (BuildContext context) => UiProvider()..init(),
-      child:
-          Consumer<UiProvider>(builder: (context, UiProvider notifier, child) {
-        return MaterialApp(
-          debugShowCheckedModeBanner: false,
-          title: 'Flutter Demo',
-          themeMode: notifier.isDark ? ThemeMode.dark : ThemeMode.light,
-          darkTheme: notifier.isDark ? notifier.darkTheme : notifier.lightTheme,
-          theme: ThemeData(
-            colorScheme:
-                ColorScheme.fromSeed(seedColor: Colors.lightBlueAccent),
-            useMaterial3: true,
-          ),
-          home: const ThirdPage(
-            NameValue: 'asa',
-            AgeValue: 'as',
-            EmailValue: 'as',
-            ImageValue: 'as',
-          ), // 홈 화면은 설정 창
-        );
-      }),
+    return const MaterialApp(
+      debugShowCheckedModeBanner: false,
+      title: 'Flutter Demo',
+      home: ThirdPage(
+        NameValue: '',
+        AgeValue: '',
+        EmailValue: '',
+        // ImageValue: '',
+      ), // 홈 화면은 설정 창
     );
+    //   }),
+    // );
   }
 }

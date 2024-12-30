@@ -24,3 +24,8 @@ double getProportionateScreenWidth(double inputWidth) {
   double screenWidth = SizeConfig.screenWidth;
   return (inputWidth / 375.0) * screenWidth;
 }
+
+double getProportionateFontSize(double inputFontSize) {
+  double screenWidth = SizeConfig.screenWidth;
+  return (inputFontSize / 375.0) * screenWidth;
+}

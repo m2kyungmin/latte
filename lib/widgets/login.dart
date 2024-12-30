@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:latte/auth/auth.dart';
+import 'package:latte/size_config.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -22,15 +23,15 @@ class _LoginPageState extends State<LoginPage> {
         body: SingleChildScrollView(
           child: Column(
             children: [
-              const SizedBox(
-                height: 50,
+              SizedBox(
+                height: getProportionateScreenHeight(50),
               ),
               const Icon(
                 Icons.lock,
                 size: 100,
               ),
-              const SizedBox(
-                height: 50,
+              SizedBox(
+                height: getProportionateScreenHeight(50),
               ),
               Text(
                 "Welcome back, you've been missed!",
@@ -39,27 +40,28 @@ class _LoginPageState extends State<LoginPage> {
                   fontSize: 16,
                 ),
               ),
-              const SizedBox(
-                height: 25,
+              SizedBox(
+                height: getProportionateScreenHeight(25),
               ),
               MyTextField(
                 controller: usernameController,
                 hintText: 'Username',
                 obscureText: false,
               ),
-              const SizedBox(
-                height: 10,
+              SizedBox(
+                height: getProportionateScreenHeight(10),
               ),
               MyTextField(
                 controller: passwordController,
                 hintText: 'Password',
                 obscureText: true,
               ),
-              const SizedBox(
-                height: 10,
+              SizedBox(
+                height: getProportionateScreenHeight(10),
               ),
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 25.0),
+                padding: EdgeInsets.symmetric(
+                    horizontal: getProportionateScreenHeight(25.0)),
                 child: Row(
                   children: [
                     Text(
@@ -69,8 +71,8 @@ class _LoginPageState extends State<LoginPage> {
                   ],
                 ),
               ),
-              const SizedBox(
-                height: 25,
+              SizedBox(
+                height: getProportionateScreenHeight(25),
               ),
               MyButton(
                 onTap: () async {
@@ -80,8 +82,8 @@ class _LoginPageState extends State<LoginPage> {
                   );
                 },
               ),
-              const SizedBox(
-                height: 50,
+              SizedBox(
+                height: getProportionateScreenHeight(50),
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -90,8 +92,8 @@ class _LoginPageState extends State<LoginPage> {
                     'Not a member?',
                     style: TextStyle(color: Colors.grey[700]),
                   ),
-                  const SizedBox(
-                    width: 4,
+                  SizedBox(
+                    width: getProportionateScreenWidth(4),
                   ),
                   const Text(
                     'Register now',

@@ -12,13 +12,15 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'firebase_options.dart';
 
+import 'package:firebase_core/firebase_core.dart';
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
-  await initializeDateFormatting(); // 추가된 부분, 원하는 로케일로 변경
-  runApp(const HeartPlanner());
+  if (Firebase.apps.isEmpty) {
+    await Firebase.initializeApp();
+  }
+  await initializeDateFormatting('ko_KR');
+  runApp(HeartPlanner());
 }
 
 class HeartPlanner extends StatelessWidget {
@@ -30,6 +32,7 @@ class HeartPlanner extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    SizeConfig().init(context);
     return MaterialApp(
       theme: ThemeData(fontFamily: 'MangoDdobak'),
       debugShowCheckedModeBanner: false,
@@ -46,8 +49,8 @@ class HeartPlanner extends StatelessWidget {
             //         color: Colors.white)),
             SvgPicture.asset(
           'assets/images/image01.svg',
-          width: 300,
-          height: 300,
+          width: getProportionateScreenWidth(300),
+          height: getProportionateScreenHeight(300),
         ),
         splashIconSize: double.infinity,
         backgroundColor: const Color(0xffE3CFCC),
@@ -85,7 +88,6 @@ class _MyWidgetState extends State<MyWidget> {
       NameValue: 'km',
       AgeValue: '24',
       EmailValue: 'asd@gmail.com',
-      ImageValue: 'asd',
     ),
     const SecClick(),
   ];

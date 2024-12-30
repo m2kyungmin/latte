@@ -37,8 +37,11 @@ android {
     }
 
     kotlinOptions {
-        jvmTarget = '1.8'
-    }
+    jvmTarget = "1.8"
+    languageVersion = "1.9"
+    apiVersion = "1.9"
+}
+
 
     sourceSets {
         main.java.srcDirs += 'src/main/kotlin'
@@ -49,7 +52,8 @@ android {
         applicationId "com.example.heartplanner"
         // You can update the following values to match your application needs.
         // For more information, see: https://docs.flutter.dev/deployment/android#reviewing-the-gradle-build-configuration.
-        minSdkVersion 20
+        minSdkVersion 23
+        minSdkVersion flutter.minSdkVersion
         targetSdkVersion flutter.targetSdkVersion
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
@@ -69,10 +73,9 @@ flutter {
 }
 
 dependencies {  // Import the Firebase BoM
- classpath 'com.android.tools.build:gradle:3.5.0'
-    classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-    classpath 'com.google.gms:google-services:4.3.3'
-  implementation(platform("com.google.firebase:firebase-bom:33.2.0"))
+//  classpath 'com.android.tools.build:gradle:3.5.0'
+//     classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+//     classpath 'com.google.gms:google-services:4.3.3'
 
 
   // TODO: Add the dependencies for Firebase products you want to use

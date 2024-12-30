@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:latte/size_config.dart';
 
 class DiaryBlock extends StatefulWidget {
   const DiaryBlock({super.key});
@@ -12,16 +13,16 @@ class _DiaryBlockState extends State<DiaryBlock> {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        const SizedBox(
-          width: 10,
+        SizedBox(
+          width: getProportionateScreenWidth(10),
         ),
         Container(
-          width: 160,
-          height: 160,
+          width: getProportionateScreenWidth(160),
+          height: getProportionateScreenHeight(160),
           color: Colors.black,
         ),
-        const SizedBox(
-          width: 10,
+        SizedBox(
+          width: getProportionateScreenWidth(10),
         ),
       ],
     );

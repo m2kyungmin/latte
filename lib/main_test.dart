@@ -13,14 +13,14 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'firebase_options.dart';
 
-void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
-  await initializeDateFormatting(); // 추가된 부분, 원하는 로케일로 변경
-  runApp(const MyWidget());
-}
+// void main() async {
+//   WidgetsFlutterBinding.ensureInitialized();
+//   await Firebase.initializeApp(
+//     options: DefaultFirebaseOptions.currentPlatform,
+//   );
+//   await initializeDateFormatting(); // 추가된 부분, 원하는 로케일로 변경
+//   runApp(const MyWidget());
+// }
 
 class MyWidget extends StatefulWidget {
   const MyWidget({super.key});
